@@ -4,8 +4,6 @@
 //ᵃᵇᶜᵈᵉᶠᵍʰⁱʲᵏˡᵐⁿᵒᵖʳˢᵗᵘᵛʷˣʸᶻ
 //ₐ ₑ ₕ ᵢ ⱼ ₖ ₗ ₘ ₙ ₒ ₚ ᵣ ₛ ₜ ᵤ ᵥ ₓ
 
-using System.Net.NetworkInformation;
-
 internal class Program
 {
     private static void Main(string[] args)
@@ -416,9 +414,174 @@ internal class Test_1
         {
             if (n % i == 0)
             {
-                res.Add(n/i);
+                res.Add(n / i);
             }
         }
+        return res;
+    }
+
+
+    public List<int> Sieve_Naive(int n)//θ(n.sqrt(n))
+    {
+        var res = new List<int>();
+        var isPrime = new bool[n + 1];
+        Array.Fill(isPrime, true);
+
+        for (int i = 2; i * i <= n; i++)
+        {
+            if (isPrime[i])
+            {
+                for (int j = 2 * i; j <= n; j = j + i)
+                {
+                    isPrime[j] = false;
+                }
+            }
+        }
+        for (int i = 2; i <= n; i++)
+        {
+            if (isPrime[i])
+            {
+                res.Add(i);
+            }
+        }
+        return res;
+    }
+
+    public List<int> Sieve_Efficient_1(int n)
+    {
+        var res = new List<int>();
+        var isPrime = new bool[n + 1];
+        Array.Fill(isPrime, true);
+
+        for (int i = 2; i * i <= n; i++)
+        {
+            if (isPrime[i])
+            {
+                for (int j = i * i; j <= n; j = j + i)
+                {
+                    isPrime[j] = false;
+                }
+            }
+        }
+        for (int i = 2; i <= n; i++)
+        {
+            if (isPrime[i])
+            {
+                res.Add(i);
+            }
+        }
+        return res;
+    }
+
+    public List<int> Sieve_Efficient_2(int n)//θ(n.log(log(n))) 
+    {
+        var res = new List<int>();
+        var isPrime = new bool[n + 1];
+        Array.Fill(isPrime, true);
+
+        for (int i = 2; i <= n; i++)
+        {
+            if (isPrime[i])
+            {
+                res.Add(i);
+                for (int j = i * i; j <= n; j = j + i)
+                {
+                    isPrime[j] = false;
+                }
+            }
+        }
+
+        return res;
+    }
+
+    /// <summary>
+    /// x to the power n
+    /// A simple solution to calculate pow(x, n) would multiply x exactly n times. We can do that by using a simple for loop
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="n"></param>
+    /// <returns></returns>
+    public int Pow_naive(int x, int n)//θ(n)
+    {
+        int res = 1;
+        for (int i = 0; i < n; i++)
+        {
+            res = res * x;
+        }
+        return res;
+    }
+
+    /// <summary>
+    /// power(x, n) = power(x, n / 2) * power(x, n / 2);        // if n is even
+    /// power(x, n) = x * power(x, n / 2) * power(x, n / 2);    // if n is odd
+    /// recursive solution
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="n"></param>
+    /// <returns></returns>
+    public int Pow_Efficient_1(int x, int n)//θ(log(n)) //Auxiliary Space: θ(log(n)) // Since uses recursion and height of tree goes up-to log(n) height
+    {
+        if (n == 0)
+            return 1;
+        int temp = Pow_Efficient_1(x, n / 2);
+        temp = temp * temp;
+        if (n % 2 == 0)
+            return temp;
+        else
+            return temp * x;
+    }
+
+    /// <summary>
+    /// Iterative solution
+    /// Every number can be written as the sum of powers of 2
+    /// We can traverse through all the bits of a number from LSB to MSB in θ(log n) time.
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="n"></param>
+    /// <returns></returns>
+    public int Pow_Efficient_2(int x, int n)//θ(log(n)) //Auxiliary Space: θ(1)
+    {
+        int res = 1;
+
+        while (n > 0)
+        {
+            if(n % 2 != 0)// bit is 1
+            {
+                res = res * x;
+            }
+            x = x * x;
+            n = n / 2;
+        }
+
+        return res;
+    }
+
+    /// <summary>
+    /// using bitwise operators
+    /// changing type from int to long for large powers
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="n"></param>
+    /// <returns></returns>
+    public long Pow_Efficient_3(int x, int n)//θ(log(n)) //Auxiliary Space: θ(1)
+    {
+        long res = 1;
+
+        while (n > 0)
+        {
+            //check if n is even or odd
+            // by doing bitwise AND operation
+            // with 1. If the result is 0 then
+            // n is even. If the result is 1 
+            // then n is odd.
+            if ((n & 1) == 1)// bit is 1
+            {
+                res = res * x;
+            }
+            x = x * x;
+            n = n >> 1; //right-shift operator// meaning dividing by 2
+        }
+
         return res;
     }
 }
