@@ -654,15 +654,15 @@ internal class Test_1
         return chars.ToString();
     }
 
-    public int firstOccurrenceIndex_Iter(int[] sortedArr, int n, int x)
+    public int firstOccurrenceIndex_Iterative(int[] sortedArr, int n, int x)
     {
-        (int  low, int high) = (0, n-1);
-        int mid = (low + high)/ 2;
-        while (low<high)
+        (int low, int high) = (0, n - 1);
+        while (low < high)
         {
+            int mid = (low + high) / 2;
             if (sortedArr[mid] == x)
             {
-                if (mid == 0 || sortedArr[mid - 1] != sortedArr[mid + 1])
+                if (mid == 0 || sortedArr[mid - 1] != sortedArr[mid])
                 {
                     return mid;
                 }
@@ -677,30 +677,89 @@ internal class Test_1
         return -1;
     }
 
-    public int firstOccurrenceIndex_Rec(int[] sortedArr, int low, int high, int x)
+    public int firstOccurrenceIndex_Recursive(int[] sortedArr, int low, int high, int x)
     {
         if (low > high) return -1;
         int mid = (low + high) / 2;
         if (x == sortedArr[mid])
         {
-            if (mid == 0 || sortedArr[mid - 1] != sortedArr[mid + 1])
+            if (mid == 0 || sortedArr[mid - 1] != sortedArr[mid])
             {
                 return mid;
             }
             else
             {
-                return firstOccurrenceIndex_Rec(sortedArr, mid, mid - 1, x);
+                return firstOccurrenceIndex_Recursive(sortedArr, low, mid - 1, x);
             }
         }
         else if (x < sortedArr[mid + 1])
         {
             high = mid - 1;
-            return firstOccurrenceIndex_Rec(sortedArr, low, high, x);
+            return firstOccurrenceIndex_Recursive(sortedArr, low, high, x);
         }
         else
         {
             low = mid + 1;
-            return firstOccurrenceIndex_Rec(sortedArr, low, high, x);
+            return firstOccurrenceIndex_Recursive(sortedArr, low, high, x);
         }
+    }
+
+    public int lastOccurrenceIndex_Recursive(int[] sortedArr, int low, int high, int x, int n)
+    {
+        if (low > high) return -1;
+        int mid = (low + high) / 2;
+        if (x == sortedArr[mid])
+        {
+            if (mid == n - 1 || sortedArr[mid] != sortedArr[mid + 1])
+            {
+                return mid;
+            }
+            else
+            {
+                return lastOccurrenceIndex_Recursive(sortedArr, mid + 1, high, x, n);
+            }
+        }
+        else if (x < sortedArr[mid + 1])
+        {
+            high = mid - 1;
+            return lastOccurrenceIndex_Recursive(sortedArr, low, high, x, n);
+        }
+        else
+        {
+            low = mid + 1;
+            return lastOccurrenceIndex_Recursive(sortedArr, low, high, x, n);
+        }
+    }
+
+    public int lastOccurrenceIndex_Iterative(int[] sortedArr, int x, int n)
+    {
+        (int low, int high) = (0, n - 1);
+        while (low < high)
+        {
+            int mid = (low + high) / 2;
+            if (sortedArr[mid] == x)
+            {
+                if (mid != n-1  || sortedArr[mid] != sortedArr[mid+1])
+                {
+                    return mid;
+                }
+                else
+                {
+                    low = mid + 1;
+                }
+            }
+            else if (sortedArr[mid] > x) high = mid - 1;
+            else low = mid + 1;
+        }
+        return -1;
+    }
+
+    public int countOccurrence_Iterative(int[] sortedArr, int n, int x)
+    {
+        int first = firstOccurrenceIndex_Iterative(sortedArr, n, x);
+        if (first == -1)
+            return 0;
+        else
+            return lastOccurrenceIndex_Iterative(sortedArr, x, n) - first + 1;
     }
 }
