@@ -4,6 +4,10 @@
 //ᵃᵇᶜᵈᵉᶠᵍʰⁱʲᵏˡᵐⁿᵒᵖʳˢᵗᵘᵛʷˣʸᶻ
 //ₐ ₑ ₕ ᵢ ⱼ ₖ ₗ ₘ ₙ ₒ ₚ ᵣ ₛ ₜ ᵤ ᵥ ₓ
 
+
+using System.Diagnostics.CodeAnalysis;
+using System.Numerics;
+
 internal class Program
 {
     private static void Main(string[] args)
@@ -16,8 +20,16 @@ internal class Program
 
         //var res = test_1.GCDorHCF_Efficient_2(20, 28);
 
-        var res = test_1.PrimeFactors_Efficient_1(84);
-        res.ForEach(Console.WriteLine);
+        //var res = test_1.PrimeFactors_Efficient_1(84);
+        //res.ForEach(Console.WriteLine);
+
+        //var res = test_1.RecursivePower(9,9);
+
+        var res = test_1.BSearch(new int[] { 1, 2, 3, 4 }, 4, 3);
+        Console.WriteLine(res);
+
+        //var res = test_1.reverse("Kevin");
+        //Console.WriteLine(res);
     }
 }
 
@@ -581,7 +593,114 @@ internal class Test_1
             x = x * x;
             n = n >> 1; //right-shift operator// meaning dividing by 2
         }
-
+        
         return res;
+    }
+
+    public long power(int n, int r)
+    {
+        double dividend = Math.Pow(n, r);
+        double divisor = 1000000007;
+        
+        double quotient = dividend / divisor;
+        double remainder = dividend - (divisor * quotient);
+        return (long) remainder;
+    }
+
+    //387420489
+    public int RecursivePower(int n, int p)
+    {
+        //Your code here
+        if (n == 0) return 0;
+        if (p == 0) return 1;
+        return n * RecursivePower(n, p-1);
+    }
+
+    public int BSearch(int[] sortedArr, int n, int x)//θ(log(n)) //Auxiliary Space: θ(1)
+    {
+        int low = 0, high = n - 1;
+        while (low <= high)
+        {
+            int mid = (low + high) / 2;
+            if (sortedArr[mid] == x) return mid;
+            else if (sortedArr[mid] > x) high = mid - 1;
+            else low = mid + 1;
+        }
+        return -1;
+
+        //return Array.FindIndex(arr, a => a == x);
+    }
+
+    public int BSearchRec(int[] sortedArr, int low, int high, int x)//θ(log(n)) //Auxiliary Space: θ(log(n))
+    {
+        if (low > high) return -1;
+        int mid = (low + high) / 2;
+        if (sortedArr[mid] == x) return mid;
+        else if (sortedArr[mid] > x) return BSearchRec(sortedArr, low, mid - 1, x);
+        else return BSearchRec(sortedArr, mid + 1, high, x);
+    }
+
+    public string reverse(string s)
+    {
+        char[] chars = s.ToCharArray();
+        int i=0;
+        int j=s.Length-1;
+        while (i<j)
+        {
+            (chars[i], chars[j]) = (chars[j], chars[i]);
+            i++;
+            j--;
+        }
+        return chars.ToString();
+    }
+
+    public int firstOccurrenceIndex_Iter(int[] sortedArr, int n, int x)
+    {
+        (int  low, int high) = (0, n-1);
+        int mid = (low + high)/ 2;
+        while (low<high)
+        {
+            if (sortedArr[mid] == x)
+            {
+                if (mid == 0 || sortedArr[mid - 1] != sortedArr[mid + 1])
+                {
+                    return mid;
+                }
+                else
+                {
+                    high = mid - 1;
+                }
+            }
+            else if (sortedArr[mid] > x) high = mid - 1;
+            else low = mid + 1;
+        }
+        return -1;
+    }
+
+    public int firstOccurrenceIndex_Rec(int[] sortedArr, int low, int high, int x)
+    {
+        if (low > high) return -1;
+        int mid = (low + high) / 2;
+        if (x == sortedArr[mid])
+        {
+            if (mid == 0 || sortedArr[mid - 1] != sortedArr[mid + 1])
+            {
+                return mid;
+            }
+            else
+            {
+                return firstOccurrenceIndex_Rec(sortedArr, mid, mid - 1, x);
+            }
+        }
+        else if (x < sortedArr[mid + 1])
+        {
+            high = mid - 1;
+            return firstOccurrenceIndex_Rec(sortedArr, low, high, x);
+        }
+        else
+        {
+            low = mid + 1;
+            return firstOccurrenceIndex_Rec(sortedArr, low, high, x);
+        }
     }
 }
