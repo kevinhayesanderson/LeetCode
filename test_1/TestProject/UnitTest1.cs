@@ -126,6 +126,167 @@ namespace TestProject
             --------
             12
             */
+
+
+            int number = 1024;
+
+            unsafe
+            {
+                // Convert to byte:
+                byte* p = (byte*)&number;
+
+                Console.Write("The 4 bytes of the integer:");
+
+                // Display the 4 bytes of the int variable:
+                for (int i = 0; i < sizeof(int); ++i)
+                {
+                    Console.Write(" {0:X2}", *p);
+                    // Increment the pointer:
+                    p++;
+                }
+                Console.WriteLine();
+                Console.WriteLine("The value of the integer: {0}", number);
+
+                /* Output:
+                    The 4 bytes of the integer: 00 04 00 00
+                    The value of the integer: 1024
+                */
+            }
+
+            //unmanaged types:
+            //sbyte, byte, short, ushort, int, uint, long, ulong, nint, nuint, char, float, double, decimal, or bool
+
+            //Fixed-size buffer types:
+            //bool, byte, char, short, int, long, sbyte, ushort, uint, ulong, float, or double.
+        }
+
+        internal unsafe struct Buffer
+        {
+            public fixed char fixedBuffer[128];
+        }
+
+        internal unsafe class Example
+        {
+            public Buffer buffer = default;
+        }
+
+        [TestMethod]
+        public void AccessEmbeddedArray()
+        {
+            var example = new Example();
+
+            unsafe
+            {
+                // Pin the buffer to a fixed location in memory.
+                fixed (char* charPtr = example.buffer.fixedBuffer)
+                {
+                    *charPtr = 'A';
+                }
+                // Access safely through the index:
+                char c = example.buffer.fixedBuffer[0];
+                Console.WriteLine(c);
+
+                // Modify through the index:
+                example.buffer.fixedBuffer[0] = 'B';
+                Console.WriteLine(example.buffer.fixedBuffer[0]);
+            }
+        }
+
+        
+        private static unsafe void Copy(byte[] source, int sourceOffset, byte[] target,
+    int targetOffset, int count)
+        {
+            // If either array is not instantiated, you cannot complete the copy.
+            if ((source == null) || (target == null))
+            {
+                throw new System.ArgumentException("source or target is null");
+            }
+
+            // If either offset, or the number of bytes to copy, is negative, you
+            // cannot complete the copy.
+            if ((sourceOffset < 0) || (targetOffset < 0) || (count < 0))
+            {
+                throw new System.ArgumentException("offset or bytes to copy is negative");
+            }
+
+            // If the number of bytes from the offset to the end of the array is
+            // less than the number of bytes you want to copy, you cannot complete
+            // the copy.
+            if ((source.Length - sourceOffset < count) ||
+                (target.Length - targetOffset < count))
+            {
+                throw new System.ArgumentException("offset to end of array is less than bytes to be copied");
+            }
+
+            // The following fixed statement pins the location of the source and
+            // target objects in memory so that they will not be moved by garbage
+            // collection.
+            fixed (byte* pSource = source, pTarget = target)
+            {
+                // Copy the specified number of bytes from source to target.
+                for (int i = 0; i < count; i++)
+                {
+                    pTarget[targetOffset + i] = pSource[sourceOffset + i];
+                }
+            }
+        }
+
+        [TestMethod]
+        public void UnsafeCopyArrays()
+        {
+            // Create two arrays of the same length.
+            int length = 100;
+            byte[] byteArray1 = new byte[length];
+            byte[] byteArray2 = new byte[length];
+
+            // Fill byteArray1 with 0 - 99.
+            for (int i = 0; i < length; ++i)
+            {
+                byteArray1[i] = (byte)i;
+            }
+
+            // Display the first 10 elements in byteArray1.
+            Console.WriteLine("The first 10 elements of the original are:");
+            for (int i = 0; i < 10; ++i)
+            {
+                Console.Write(byteArray1[i] + " ");
+            }
+            Console.WriteLine("\n");
+
+            // Copy the contents of byteArray1 to byteArray2.
+            Copy(byteArray1, 0, byteArray2, 0, length);
+
+            // Display the first 10 elements in the copy, byteArray2.
+            Console.WriteLine("The first 10 elements of the copy are:");
+            for (int i = 0; i < 10; ++i)
+            {
+                Console.Write(byteArray2[i] + " ");
+            }
+            Console.WriteLine("\n");
+
+            // Copy the contents of the last 10 elements of byteArray1 to the
+            // beginning of byteArray2.
+            // The offset specifies where the copying begins in the source array.
+            int offset = length - 10;
+            Copy(byteArray1, offset, byteArray2, 0, length - offset);
+
+            // Display the first 10 elements in the copy, byteArray2.
+            Console.WriteLine("The first 10 elements of the copy are:");
+            for (int i = 0; i < 10; ++i)
+            {
+                Console.Write(byteArray2[i] + " ");
+            }
+            Console.WriteLine("\n");
+            /* Output:
+                The first 10 elements of the original are:
+                0 1 2 3 4 5 6 7 8 9
+
+                The first 10 elements of the copy are:
+                0 1 2 3 4 5 6 7 8 9
+
+                The first 10 elements of the copy are:
+                90 91 92 93 94 95 96 97 98 99
+            */
         }
 
         [TestMethod]
