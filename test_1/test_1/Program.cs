@@ -5,8 +5,12 @@
 //ₐ ₑ ₕ ᵢ ⱼ ₖ ₗ ₘ ₙ ₒ ₚ ᵣ ₛ ₜ ᵤ ᵥ ₓ
 
 
+
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
+using System.Runtime.InteropServices;
+
 
 internal class Program
 {
@@ -30,6 +34,11 @@ internal class Program
 
         //var res = test_1.reverse("Kevin");
         //Console.WriteLine(res);
+
+        long mid = (long)res;
+        int value = (int)mid;
+
+        
     }
 }
 
@@ -761,5 +770,92 @@ internal class Test_1
             return 0;
         else
             return lastOccurrenceIndex_Iterative(sortedArr, x, n) - first + 1;
+    }
+
+    public int countOnes(int[] binarySortedArr, int n) //θ(log(n)) //Auxiliary Space: θ(1)
+    {
+        (int low, int high) = (0, n - 1);
+        while (low <= high)
+        {
+            int mid = (low + high) / 2;
+            if (binarySortedArr[mid] ==0)
+                low = mid + 1;
+            else
+            {
+                if (mid == 0 || binarySortedArr[mid - 1] ==0)
+                {
+                    return n - mid;
+                }
+                else
+                    high = mid - 1;
+            }
+        }
+        return 0;
+    }
+
+    public static void PrintValues(Array myArr)
+    {
+        int i = 0;
+        int cols = myArr.GetLength(myArr.Rank - 1);
+        foreach (object o in myArr)
+        {
+            if (i < cols)
+            {
+                i++;
+            }
+            else
+            {
+                Console.WriteLine();
+                i = 1;
+            }
+            Console.Write("\t{0}", o);
+        }
+        Console.WriteLine();
+    }
+
+    // Function to find floor of x
+    // n: size of vector
+    // x: element whose floor is to find
+    public static int findFloor(long[] arr, long n, long x)
+    {
+        //code here
+        long s = 0, e = n - 1, ans = -1;
+        while (s <= e)
+        {
+            long mid = (s + e) / 2;
+            if (arr[mid] > x) e = mid - 1;
+            else
+            {
+                ans = mid;
+                s = mid + 1;
+            }
+        }
+        return (int)ans;
+    }
+
+    // Function to find majority element in the array
+    // element that appears strictly more than N/2 times in the array.
+    // a: input array
+    // size: size of input array
+    public static int majorityElement(int[] a, int size)
+    {
+        //code here
+        int res = a[0];
+        int k = size / 2;
+        var map = new Dictionary<int, int>();
+        for (int i = 0; i < size; i++)
+        {
+            if (map.ContainsKey(a[i]))
+            {
+                map[a[i]]++;
+            }
+            else { map[a[i]] =1; }
+            if (map[a[i]] > k)
+            {
+                res = a[i];
+                break;
+            }
+        }
+        return res;
     }
 }

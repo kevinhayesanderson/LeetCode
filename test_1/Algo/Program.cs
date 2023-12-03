@@ -25,4 +25,21 @@
             return false;
         }
     }
+
+
+    public abstract class baseclass
+    {
+        public virtual string GetName()
+        {
+            return nameof(baseclass);
+        }
+    }
+
+    public class childclass : baseclass
+    {
+        public new string GetName()
+        {
+            return nameof(baseclass);
+        }
+    }
 }
