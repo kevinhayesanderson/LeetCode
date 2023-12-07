@@ -1,4 +1,4 @@
-﻿
+﻿using LeetCode.ArrayTopics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +7,7 @@ namespace LeetCode
 {
     internal class Program
     {
+        private static readonly Class1 array = new();
         protected Program()
         {
 
@@ -14,30 +15,38 @@ namespace LeetCode
 
         private static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            //Console.WriteLine("Hello, World!");
 
-            var test = new Test();
+            //var test = new Test();
 
             //var res = test.RunningSum(new int[] { 1, 2, 3, 4 });//[1,3,6,10]
-
-            //Array.ForEach(res, Console.WriteLine);
-
+            //Console.WriteLine(res);
 
             //var res1 = test.MaximumWealth(new int[][] { new int[] { 2, 8, 7 }, new int[] { 7, 1, 3 }, new int[] { 1, 9, 5 } });
-
             //Console.WriteLine(res1);
 
+            //var head = new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4, new ListNode(5, new ListNode(6, null))))));
+            //var res2 = test.MiddleNode_TwoPointer(head);
+            //Console.WriteLine(res2.val);
 
-            var head = new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4, new ListNode(5, new ListNode(6, null))))));
 
-            var res2 = test.MiddleNode_TwoPointer(head);
+            //var res3 = test.CanConstruct_Naive("aa", "aab");
+            //Console.WriteLine(res3);
 
-            Console.WriteLine(res2.val);
-            ////Console.ReadKey();
-            ///
+            //var res4 = array.FindMaxConsecutiveOnes(new int[] { 0, 1, 0, 1, 1, 1, 0 });//3
+            //Console.WriteLine(res4);
+            //res4 = array.FindMaxConsecutiveOnes(new int[] { 0, 1, 0, 1, 1, 1, 0, 1, 1 });//3
+            //Console.WriteLine(res4);
+            //res4 = array.FindMaxConsecutiveOnes(new int[] { 1, 1, 0, 1, 1, 1, 0 });//3
+            //Console.WriteLine(res4);
+            //res4 = array.FindMaxConsecutiveOnes(new int[] { 1, 1, 0, 1, 1, 1, 0, 1, 1 });//3
+            //Console.WriteLine(res4);
+            //res4 = array.FindMaxConsecutiveOnes(new int[] { 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0 });//4
+            //Console.WriteLine(res4);
 
-            var res3 = test.CanConstruct("aa", "aab");
-            Console.WriteLine(res3);
+            var res5 = array.SortedSquares_TwoPointer_While(new int[] { -4, -1, 0, 3, 10 });//[0,1,9,16,100]
+            Array.ForEach(res5, x => Console.WriteLine(x));
+
         }
 
 
@@ -81,7 +90,7 @@ namespace LeetCode
             int steps = 0;
             while (num > 0)
             {
-                if(num % 2 == 0)
+                if (num % 2 == 0)
                 {
                     num /= 2;
                 }
@@ -101,7 +110,7 @@ namespace LeetCode
             {
                 if ((num & 1) == 0)
                 {
-                    num  >>= 1;
+                    num >>= 1;
                 }
                 else
                 {
@@ -132,7 +141,7 @@ namespace LeetCode
             ListNode middle = head;
             ListNode end = head;
 
-            while (end != null && end.next != null) 
+            while (end != null && end.next != null)
             {
                 middle = middle.next;
                 end = end.next.next;
@@ -149,9 +158,9 @@ namespace LeetCode
                 map[magazine[i]] = map.TryGetValue(magazine[i], out int value) ? value + 1 : 1;
             }
 
-            for (int i = 0;i < ransomNote.Length; i++)
+            for (int i = 0; i < ransomNote.Length; i++)
             {
-                if(map.GetValueOrDefault(ransomNote[i]) == 0)
+                if (map.GetValueOrDefault(ransomNote[i]) == 0)
                 {
                     return false;
                 }
