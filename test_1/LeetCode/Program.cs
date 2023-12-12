@@ -44,8 +44,16 @@ namespace LeetCode
             //res4 = array.FindMaxConsecutiveOnes(new int[] { 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0 });//4
             //Console.WriteLine(res4);
 
-            var res5 = array.SortedSquares_TwoPointer_While(new int[] { -4, -1, 0, 3, 10 });//[0,1,9,16,100]
-            Array.ForEach(res5, x => Console.WriteLine(x));
+            //var res5 = array.SortedSquares_TwoPointer_While(new int[] { -4, -1, 0, 3, 10 });//[0,1,9,16,100]
+            //Array.ForEach(res5, x => Console.WriteLine(x));
+
+            //array.DuplicateZeros(new int[] { 1, 0, 2, 3, 0, 4, 5, 0 });
+
+            //array.duplicateZeros(new int[] { 1, 0, 2, 3, 0, 4, 5, 0 });
+
+            array.Merge(nums1: new int[] { 1, 2, 3, 0, 0, 0 }, m: 3, nums2: new int[] { 2, 5, 6 }, n: 3);
+
+            array.Merge(nums1: new int[] { 0 }, m: 0, nums2: new int[] { 1 }, n: 1);
 
         }
 

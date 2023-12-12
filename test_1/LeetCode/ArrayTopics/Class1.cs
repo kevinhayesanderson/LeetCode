@@ -149,5 +149,104 @@ namespace LeetCode.ArrayTopics
             }
             return squares;
         }
+
+        //Duplicate Zeros
+        public void DuplicateZeros(int[] arr)//[1,0,2,3,0,4,5,0]//[1,0,0,2,3,0,0,4]
+        {
+            int n = arr.Length;
+            for (int i = 0; i < n; i++)
+            {
+                if (arr[i] == 0)
+                {
+                    for (int j = n-1; j > i ; j--)
+                    {
+                        arr[j] = arr[j-1];
+                    }
+                    i++;
+                }
+            }
+        }
+
+        public void duplicateZeros(int[] arr)
+        {
+            int possibleDups = 0;
+            int length_ = arr.Length - 1;
+
+            // Find the number of zeros to be duplicated
+            // Stopping when left points beyond the last element in the original array
+            // which would be part of the modified array
+            for (int left = 0; left <= length_ - possibleDups; left++)
+            {
+
+                // Count the zeros
+                if (arr[left] == 0)
+                {
+
+                    // Edge case: This zero can't be duplicated. We have no more space,
+                    // as left is pointing to the last element which could be included  
+                    if (left == length_ - possibleDups)
+                    {
+                        // For this zero we just copy it without duplication.
+                        arr[length_] = 0;
+                        length_ -= 1;
+                        break;
+                    }
+                    possibleDups++;
+                }
+            }
+
+            // Start backwards from the last element which would be part of new array.
+            int last = length_ - possibleDups;
+
+            // Copy zero twice, and non zero once.
+            for (int i = last; i >= 0; i--)
+            {
+                if (arr[i] == 0)
+                {
+                    arr[i + possibleDups] = 0;
+                    possibleDups--;
+                    arr[i + possibleDups] = 0;
+                }
+                else
+                {
+                    arr[i + possibleDups] = arr[i];
+                }
+            }
+        }
+
+
+        //Merge Sorted Array
+        //nums1 = [1,2,3,0,0,0], m = 3, nums2 = [2,5,6], n = 3
+        //[1,2,2,3,5,6]
+        public void Merge(int[] nums1, int m, int[] nums2, int n)
+        {
+            int r1 = m - 1;
+            int r2 = n - 1;
+
+            for (int w = m + n - 1; w >= 0; w--)
+            {
+                if (r1 >= 0 && r2 >= 0)
+                {
+                    nums1[w] = nums1[r1] > nums2[r2] ? nums1[r1--] : nums2[r2--];
+                }
+                else if (r1 >= 0)
+                {
+                    nums1[w] = nums1[r1--];
+                }
+                else
+                {
+                    nums1[w] = nums2[r2--];
+                }
+            }
+        }
+
+        public void merge_Naive(int[] nums1, int m, int[] nums2, int n)
+        {
+            for (int i = 0; i < n; i++)
+            {
+                nums1[i + m] = nums2[i];
+            }
+            Array.Sort(nums1);
+        }
     }
 }
