@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace LeetCode.ArrayTopics
 {
@@ -90,11 +89,11 @@ namespace LeetCode.ArrayTopics
         }
 
         // USING LOG10:
-        public static int Digits_Log10( int n) =>
+        public static int Digits_Log10(int n) =>
             n == 0 ? 1 : (n > 0 ? 1 : 2) + (int)Math.Log10(Math.Abs((double)n));
 
         // WHILE LOOP:
-        public static int Digits_While( int n)
+        public static int Digits_While(int n)
         {
             int digits = n < 0 ? 2 : 1;
             while ((n /= 10) != 0) ++digits;
@@ -137,12 +136,12 @@ namespace LeetCode.ArrayTopics
             {
                 if (Math.Abs(nums[left]) < Math.Abs(nums[right]))
                 {
-                    squares[n-1] = nums[right] * nums[right];
+                    squares[n - 1] = nums[right] * nums[right];
                     right--;
                 }
                 else
                 {
-                    squares[n-1] = nums[left] * nums[left];
+                    squares[n - 1] = nums[left] * nums[left];
                     left++;
                 }
                 n--;
@@ -158,9 +157,9 @@ namespace LeetCode.ArrayTopics
             {
                 if (arr[i] == 0)
                 {
-                    for (int j = n-1; j > i ; j--)
+                    for (int j = n - 1; j > i; j--)
                     {
-                        arr[j] = arr[j-1];
+                        arr[j] = arr[j - 1];
                     }
                     i++;
                 }
@@ -248,5 +247,264 @@ namespace LeetCode.ArrayTopics
             }
             Array.Sort(nums1);
         }
+
+        /// <summary>
+        /// Input: nums = [0,1,2,2,3,0,4,2], val = 2
+        /// Output: 5, nums = [0,1,4,0,3, _, _, _]
+        /// Explanation: Your function should return k = 5, with the first five elements of nums containing 0, 0, 1, 3, and 4.
+        /// Note that the five elements can be returned in any order.
+        /// It does not matter what you leave beyond the returned k (hence they are underscores).
+        /// </summary>
+        /// <param name="nums"></param>
+        /// <param name="val"></param>
+        /// <returns>k</returns>
+        public int RemoveElement_TwoPointer(int[] nums, int val)
+        {
+            int i = 0;
+            int n = nums.Length;
+            while (i < n)
+            {
+                if (nums[i] == val)
+                {
+                    nums[i] = nums[n - 1];
+                    // reduce array size by one
+                    n--;
+                }
+                else
+                {
+                    i++;
+                }
+            }
+            return n;
+        }
+
+        public int RemoveElement(int[] nums, int val)
+        {
+            int i = 0;
+            for (int j = 0; j < nums.Length; j++)
+            {
+                if (nums[j] != val)
+                {
+                    nums[i] = nums[j];
+                    i++;
+                }
+            }
+            return i;
+        }
+
+        /// <summary>
+        /// Input: nums = [0,0,1,1,1,2,2,3,3,4]
+        /// Output: 5, nums = [0,1,2,3,4, _, _, _, _, _]
+        /// Explanation: Your function should return k = 5, with the first five elements of nums being 0, 1, 2, 3, and 4 respectively.
+        /// It does not matter what you leave beyond the returned k(hence they are underscores).
+        /// </summary>
+        /// <param name="nums"></param>
+        /// <returns></returns>
+        public int RemoveDuplicates_Naive(int[] nums)
+        {
+            int k = 1;
+            int w = 0;
+            int r = 0;
+            while (r < nums.Length)
+            {
+                if (nums[r] != nums[w])
+                {
+                    w++;
+                    nums[w] = nums[r];
+                    k++;
+                }
+                r++;
+            }
+
+            return k;
+        }
+
+        public int RemoveDuplicates_TwoIndex(int[] nums)
+        {
+            int n = nums.Length;
+            if (n == 0)
+            {
+                return 0;
+            }
+
+            int insertIndex = 1;
+            for (int i = 1; i < n; i++)
+            {
+                if (nums[i] != nums[i - 1])
+                {
+                    nums[insertIndex] = nums[i];
+                    insertIndex++;
+                }
+            }
+
+            return insertIndex;
+        }
+
+        public int RemoveDuplicates_Naive1(int[] nums)
+        {
+            int r = 0, w = 0;
+            while (r < nums.Length)
+            {
+                if (nums[r] != nums[w])
+                {
+                    w++;
+                    nums[w] = nums[r];
+                }
+                r++;
+            }
+
+            return w + 1;
+        }
+
+        /// <summary>
+        /// Given an array arr of integers, check if there exist two indices i and j such that :
+        /// i != j
+        /// 0 <= i, j<arr.length
+        /// arr[i] == 2 * arr[j]
+        /// </summary>
+        /// <param name="arr"></param>
+        /// <returns></returns>
+        public bool CheckIfExist(int[] arr)
+        {
+            for (int i = 0; i < arr.Length; i++)
+            {
+                for (int j = 0; j < arr.Length; j++)
+                {
+                    if (i != j && arr[i] == 2 * arr[j])
+                        return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// https://leetcode.com/problems/valid-mountain-array/description/
+        /// </summary>
+        /// <param name="arr"></param>
+        /// <returns></returns>
+        public bool ValidMountainArray_Naive(int[] arr)
+        {
+            if (arr.Length < 3) return false;
+            for (int i = 1; i < arr.Length -1; i++)
+            {
+                if (arr[i - 1] >= arr[i]) return false;
+                if (arr[i] == arr[i + 1]) return false;
+                if (arr[i] > arr[i + 1])
+                {
+                    for (int j = i; j < arr.Length -1; j++)
+                    {
+                        if (arr[j +1] >= arr[j]) return false;
+                        if (j + 1 == arr.Length - 1) return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        public bool ValidMountainArray_OnePass(int[] arr)
+        {
+            int N = arr.Length;
+            int i = 0;
+
+            // walk up
+            while (i + 1 < N && arr[i] < arr[i + 1])
+                i++;
+
+            // peak can't be first or last
+            if (i == 0 || i == N - 1)
+                return false;
+
+            // walk down
+            while (i + 1 < N && arr[i] > arr[i + 1])
+                i++;
+
+            //If we reach the end, the array is valid, otherwise its not.
+            return i == N - 1;
+        }
+
+        #region In-Place Array Operations
+
+        /// <summary>
+        /// replace every element in that array with the greatest element among the elements to its right, and replace the last element with -1.
+        /// Input: arr = [17,18,5,4,6,1]
+        /// Output: [18,6,6,6,1,-1]
+        /// </summary>
+        /// <param name="arr"></param>
+        /// <returns></returns>
+        public int[] ReplaceElements_Naive(int[] arr)
+        {
+            if(arr.Length == 1)
+            {
+                arr[0] = -1;
+                return arr;
+            }
+            for (int i = 1; i < arr.Length; i++)
+            {
+                int max = arr[i];
+                for (int j = i; j < arr.Length; j++)
+                {
+                    if (arr[j] > max)
+                    {
+                        max = arr[j];
+                    }
+                }
+
+                arr[i-1] = max;
+            }
+            arr[^1] = -1;
+            return arr;
+        }
+
+        public int[] ReplaceElements_Backwards(int[] arr)
+        {
+            for (int i = arr.Length - 1, max = -1; i >= 0; --i)
+            {
+                (arr[i], max) = (max, Math.Max(max, arr[i])); //tuple assignment
+            }
+            return arr;
+        }
+
+        public int RemoveDuplicates_StraightForward(int[] nums)
+        {
+            // The initial length is simply the capacity.
+            int length = nums.Length;
+
+            // Assume the last element is always unique.
+            // Then for each element, delete it if it is
+            // the same as the one after it. Use our deletion
+            // algorithm for deleting from any index.
+            for (int i = length - 2; i >= 0; i--)
+            {
+                if (nums[i] == nums[i + 1])
+                {
+                    // Delete the element at index i, using our standard
+                    // deletion algorithm we learned.
+                    for (int j = i + 1; j < length; j++)
+                    {
+                        nums[j - 1] = nums[j];
+                    }
+                    // Reduce the length by 1.
+                    length--;
+                }
+            }
+            // Return the new length.
+            return length;
+        }
+
+        public int RemoveDuplicates_TwoPointer(int[] nums)
+        {
+            int w = 0;
+            for (int r = 0; r < nums.Length; ++r)
+            {
+                if (nums[r] != nums[w])
+                {
+                    w++;
+                    nums[w] = nums[r];
+                }
+            }
+            return w + 1;
+        }
+        #endregion
     }
 }

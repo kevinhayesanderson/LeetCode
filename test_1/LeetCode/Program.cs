@@ -51,10 +51,24 @@ namespace LeetCode
 
             //array.duplicateZeros(new int[] { 1, 0, 2, 3, 0, 4, 5, 0 });
 
-            array.Merge(nums1: new int[] { 1, 2, 3, 0, 0, 0 }, m: 3, nums2: new int[] { 2, 5, 6 }, n: 3);
+            //array.Merge(nums1: new int[] { 1, 2, 3, 0, 0, 0 }, m: 3, nums2: new int[] { 2, 5, 6 }, n: 3);
 
-            array.Merge(nums1: new int[] { 0 }, m: 0, nums2: new int[] { 1 }, n: 1);
+            //array.Merge(nums1: new int[] { 0 }, m: 0, nums2: new int[] { 1 }, n: 1);
 
+            //var res6 = array.RemoveElement_TwoPointer(new int[] { 0, 1, 2, 2, 3, 0, 4, 2 }, 2);
+            //Console.WriteLine(res6);
+
+            //var res7 = array.RemoveDuplicates_Naive1(new int[] { 0, 0, 1, 1, 1, 2, 2, 3, 3, 4 });
+            //Console.WriteLine(res7);
+
+            //var res8 = array.CheckIfExist(new int[] { 10, 2, 5, 3 });
+            //Console.WriteLine(res8);
+
+            //var res9 = array.ValidMountainArray_OnePass(new int[] { 0, 3, 2, 1 });
+            //Console.WriteLine(res9);
+
+            var res10 = array.RemoveDuplicates_TwoPointer(new int[] { 1,1,2 });
+            Console.WriteLine(res10);
         }
 
 
