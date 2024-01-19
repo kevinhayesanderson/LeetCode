@@ -67,8 +67,12 @@ namespace LeetCode
             //var res9 = array.ValidMountainArray_OnePass(new int[] { 0, 3, 2, 1 });
             //Console.WriteLine(res9);
 
-            var res10 = array.RemoveDuplicates_TwoPointer(new int[] { 1,1,2 });
-            Console.WriteLine(res10);
+            //var res10 = array.RemoveDuplicates_TwoPointer(new int[] { 1,1,2 });
+            //Console.WriteLine(res10);
+
+            var arr=  new int[] { 0, 1, 0, 3, 12 };
+            array.MoveZeroes_Efficient(ref arr);
+            Array.ForEach(arr, Console.WriteLine);
         }
 
 

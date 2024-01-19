@@ -505,6 +505,53 @@ namespace LeetCode.ArrayTopics
             }
             return w + 1;
         }
+
+        public void MoveZeroes_TwoPointer_Naive(int[] nums)
+        {
+            int w = 0;
+            for (int r = 0; r < nums.Length; r++)
+            {
+                if (nums[r] != 0)
+                {
+                    nums[w] = nums[r];
+                    w++;
+                }
+            }
+            while (w < nums.Length)
+            {
+                nums[w] = 0;
+                w++;
+            }
+        }
+
+        public void MoveZeroes_Efficient(ref int[] nums)
+        {
+            for (int lastNonZeroFountAt = 0, i = 0; i < nums.Length; i++)
+            {
+                if (nums[i] != 0)
+                {
+                    (nums[lastNonZeroFountAt], nums[i]) = (nums[i], nums[lastNonZeroFountAt++]);
+                }
+            }
+        }
+
+        public void MoveZeroes_SnowBall(int[] nums)
+        {
+            int snowBallSize = 0;
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (nums[i] == 0)
+                {
+                    snowBallSize++;
+                }
+                else if (snowBallSize > 0)
+                {
+                    int t = nums[i];
+                    nums[i] = 0;
+                    nums[i - snowBallSize] = t;
+                }
+            }
+        }
         #endregion
     }
 }
