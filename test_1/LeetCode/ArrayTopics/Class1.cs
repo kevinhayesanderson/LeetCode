@@ -552,6 +552,20 @@ namespace LeetCode.ArrayTopics
                 }
             }
         }
+
+        public int[] SortArrayByParity_TwoPointer(int[] nums)
+        {
+            int w= 0;
+            for (int r = 0; r < nums.Length; r++)
+            {
+                if (nums[r] % 2==0)
+                {
+                    (nums[w], nums[r]) = (nums[r], nums[w]);
+                    w++;
+                }
+            }
+            return nums;
+        }
         #endregion
     }
 }
