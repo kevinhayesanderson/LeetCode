@@ -385,15 +385,15 @@ namespace LeetCode.ArrayTopics
         public bool ValidMountainArray_Naive(int[] arr)
         {
             if (arr.Length < 3) return false;
-            for (int i = 1; i < arr.Length -1; i++)
+            for (int i = 1; i < arr.Length - 1; i++)
             {
                 if (arr[i - 1] >= arr[i]) return false;
                 if (arr[i] == arr[i + 1]) return false;
                 if (arr[i] > arr[i + 1])
                 {
-                    for (int j = i; j < arr.Length -1; j++)
+                    for (int j = i; j < arr.Length - 1; j++)
                     {
-                        if (arr[j +1] >= arr[j]) return false;
+                        if (arr[j + 1] >= arr[j]) return false;
                         if (j + 1 == arr.Length - 1) return true;
                     }
                 }
@@ -434,7 +434,7 @@ namespace LeetCode.ArrayTopics
         /// <returns></returns>
         public int[] ReplaceElements_Naive(int[] arr)
         {
-            if(arr.Length == 1)
+            if (arr.Length == 1)
             {
                 arr[0] = -1;
                 return arr;
@@ -450,7 +450,7 @@ namespace LeetCode.ArrayTopics
                     }
                 }
 
-                arr[i-1] = max;
+                arr[i - 1] = max;
             }
             arr[^1] = -1;
             return arr;
@@ -555,10 +555,10 @@ namespace LeetCode.ArrayTopics
 
         public int[] SortArrayByParity_TwoPointer(int[] nums)
         {
-            int w= 0;
+            int w = 0;
             for (int r = 0; r < nums.Length; r++)
             {
-                if (nums[r] % 2==0)
+                if (nums[r] % 2 == 0)
                 {
                     (nums[w], nums[r]) = (nums[r], nums[w]);
                     w++;
@@ -566,6 +566,122 @@ namespace LeetCode.ArrayTopics
             }
             return nums;
         }
+
+        public int RemoveElement_TwoPointer_InPlace1(int[] nums, int val)
+        {
+            int r = 0, w = 0;
+            while (r < nums.Length)
+            {
+                if (nums[r] == val)
+                {
+                    r++;
+                }
+                else
+                {
+                    nums[w] = nums[r];
+                    r++;
+                    w++;
+                }
+            }
+            return w;
+        }
+
+        public int RemoveElement_TwoPointer_InPlace2(int[] nums, int val)
+        {
+            int w = 0;
+            for (int r = 0; r < nums.Length; r++)
+            {
+                if (nums[r] != val)
+                {
+                    nums[w++] = nums[r];
+                }
+            }
+            return w;
+        }
         #endregion
+        public int HeightChecker(int[] heights)
+        {
+            int[] sortedArr = (int[])heights.Clone();
+            Array.Sort(sortedArr);
+            int n = 0;
+            for (int i = 0; i < heights.Length; i++)
+            {
+                if (sortedArr[i] != heights[i])
+                {
+                    n++;
+                }
+            }
+
+            return n;
+        }
+
+        public int FindMaxConsecutiveOnes_Flip_Naive(int[] nums)
+        {
+            int longestSequence = 0;
+            for (int left = 0; left < nums.Length; left++)
+            {
+                int numZeroes = 0;
+
+                //Check every consecutive sequence
+                for (int right = left; right < nums.Length; right++)
+                {
+                    // Count how many 0's
+                    if (nums[right] == 0)
+                    {
+                        numZeroes += 1;
+                    }
+                    // Update answer if it's valid
+                    if (numZeroes <= 1)
+                    {
+                        longestSequence = Math.Max(longestSequence, right - left + 1);
+                    }
+                }
+            }
+            return longestSequence;
+        }
+
+        public int FindMaxConsecutiveOnes_Flip_SlidingWindow(int[] nums)
+        {
+            int longestSequence = 0;
+            int left = 0;
+            int right = 0;
+            int numZeroes = 0;
+
+            // While our window is in bounds
+            while (right < nums.Length)
+            {
+
+                // Increase numZeroes if the rightmost element is 0
+                if (nums[right] == 0)
+                {
+                    numZeroes++;
+                }
+
+                //If our window is invalid, contract our window
+                while (numZeroes == 2)
+                {
+                    if (nums[left] == 0)
+                    {
+                        numZeroes--;
+                    }
+                    left++;
+                }
+
+                // Update our longest sequence answer
+                longestSequence = Math.Max(longestSequence, right - left + 1);
+
+                // Expand our window
+                right++;
+            }
+            return longestSequence;
+        }
+        //public int ThirdMax(int[] nums)
+        //{
+        //    Array.Sort(nums);
+        //    int thirdMax = 0;
+
+        //}
+
     }
+
 }

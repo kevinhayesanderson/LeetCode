@@ -70,9 +70,23 @@ namespace LeetCode
             //var res10 = array.RemoveDuplicates_TwoPointer(new int[] { 1,1,2 });
             //Console.WriteLine(res10);
 
-            var arr=  new int[] { 0, 1, 0, 3, 12 };
-            array.MoveZeroes_Efficient(ref arr);
-            Array.ForEach(arr, Console.WriteLine);
+            //var arr=  new int[] { 0, 1, 0, 3, 12 };
+            //array.MoveZeroes_Efficient(ref arr);
+            //Array.ForEach(arr, Console.WriteLine);
+
+            //arr = new int[] { 0, 1, 1, 0, 12 };
+            //var res11 = array.RemoveElement_TwoPointer_InPlace1(arr, 0);
+            //Console.WriteLine(res11);
+
+            //var res12 = array.HeightChecker(new int[] { 1, 1, 4, 2, 1, 3 });
+            //Console.WriteLine(res12);
+
+            //var res13 = array.FindMaxConsecutiveOnes_Flip_Naive(new int[] { 1, 0, 1, 1, 0 });
+            //Console.WriteLine(res13);
+
+            var res14 = array.FindMaxConsecutiveOnes_Flip_SlidingWindow(new int[] { 1,0,0,1,1,0,1 });
+            Console.WriteLine(res14);
+
         }
 
 
