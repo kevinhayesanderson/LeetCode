@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+
 
 namespace LeetCode.ArrayTopics
 {
@@ -675,13 +677,90 @@ namespace LeetCode.ArrayTopics
             }
             return longestSequence;
         }
-        //public int ThirdMax(int[] nums)
-        //{
-        //    Array.Sort(nums);
-        //    int thirdMax = 0;
 
-        //}
+        public int ThirdMax_Sorting(int[] nums)
+        {
+            // Sort the array in non-increasing order.
+            Array.Sort(nums);
+            //Array.Reverse(nums);
 
+            // Reverse array to make it non-increasing.
+            for (int index = 0; index < nums.Length / 2; ++index)
+            {
+                int temp = nums[index];
+                nums[index] = nums[nums.Length - 1 - index];
+                nums[nums.Length - 1 - index] = temp;
+            }
+
+            int elemCounted = 1;
+            int prevElem = nums[0];
+            for (int i = 1; i < nums.Length; i++)
+            {
+                if (nums[i] != prevElem)
+                {
+                    elemCounted++;
+                    prevElem = nums[i];
+                }
+                if (elemCounted == 3)
+                {
+                    return nums[i];
+                }
+            }
+            // We never counted 3 distinct numbers, return largest number.
+            return nums[0];
+        }
+
+        public IList<int> FindDisappearedNumbers(int[] nums)
+        {
+            for (int i = 0; i < nums.Length; i++)
+            {
+                //// Treat the value as the new index
+                //int newIndex = Math.Abs(nums[i]) - 1;
+                //// Check the magnitude of value at this new index
+                //// If the magnitude is positive, make it negative 
+                //// thus indicating that the number nums[i] has 
+                //// appeared or has been visited.
+                //if (nums[newIndex] > 0)
+                //{
+                //    nums[newIndex] = nums[newIndex] * -1;
+                //}
+
+                nums[Math.Abs(nums[i])-1] = -Math.Abs(nums[Math.Abs(nums[i])-1]);
+            }
+
+            var res = new List<int>();
+            // Iterate over the numbers from 1 to N and add all those
+            // that have positive magnitude in the array
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (nums[i] > 0)
+                {
+                    res.Add(i+1);
+                }
+            }
+
+            return res;
+        }
+
+        public int[] SortedSquares_TwoPointer(int[] nums)
+        {
+            int l = 0; int r = nums.Length - 1;
+            var res = new int[nums.Length];
+            while (l <= r)
+            {
+                if (Math.Abs(nums[l]) > Math.Abs(nums[r]))
+                {
+                    res[r - l] = nums[l] * nums[l];
+                    l++;
+                }
+                else
+                {
+                    res[r - l] = nums[r] * nums[r];
+                    r--;
+                }
+            }
+
+            return res;
+        }
     }
-
 }

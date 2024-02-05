@@ -84,9 +84,15 @@ namespace LeetCode
             //var res13 = array.FindMaxConsecutiveOnes_Flip_Naive(new int[] { 1, 0, 1, 1, 0 });
             //Console.WriteLine(res13);
 
-            var res14 = array.FindMaxConsecutiveOnes_Flip_SlidingWindow(new int[] { 1,0,0,1,1,0,1 });
-            Console.WriteLine(res14);
+            //var res14 = array.FindMaxConsecutiveOnes_Flip_SlidingWindow(new int[] { 1,0,0,1,1,0,1 });
+            //Console.WriteLine(res14);
 
+            //var res15 = array.ThirdMax_Sorting(new int[] { 1, 0, 2, 3, 4, 5, 6, 7, 8, 9,9,10,10, 10, 11,11,11,11, });
+            //Console.WriteLine(res15);
+
+
+            var res16 = array.FindDisappearedNumbers(new int[] { 4, 3, 2, 7, 8, 2, 3, 1 });
+            Console.WriteLine(res16);
         }
 
 
