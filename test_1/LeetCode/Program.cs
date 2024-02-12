@@ -1,12 +1,15 @@
-﻿using LeetCode.ArrayTopics;
+﻿using LeetCode.ArraysStrings;
+using LeetCode.ArrayTopics;
 using LeetCode.LinkedList;
+using System;
 
 namespace LeetCode
 {
     internal class Program
     {
-        private static readonly ArraTopicsTestClass array = new();
+        private static readonly ArrayTopicsTestClass array = new();
         private static readonly LinkedListTestClass linkedList = new();
+        private static readonly ArraysStringsTestClass arraysStrings = new();
         protected Program()
         {
 
@@ -81,6 +84,10 @@ namespace LeetCode
             #region Linked List
 
             #endregion Linked List
+            #region Arrays & Strings
+            var res = arraysStrings.PlusOne(new int[] { 1, 2, 3 });
+            Array.ForEach(res, Console.WriteLine);
+            #endregion Arrays & Strings
         }
     }
 }

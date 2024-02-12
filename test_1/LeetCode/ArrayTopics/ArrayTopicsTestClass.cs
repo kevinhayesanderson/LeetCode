@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace LeetCode.ArrayTopics
 {
-    internal class ArraTopicsTestClass
+    internal class ArrayTopicsTestClass
     {
         public int FindMaxConsecutiveOnes(int[] nums)
         {
