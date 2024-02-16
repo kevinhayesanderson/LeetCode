@@ -1,4 +1,6 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Collections.Generic;
+using System.Numerics;
 
 namespace LeetCode.ArraysStrings
 {
@@ -81,5 +83,50 @@ namespace LeetCode.ArraysStrings
             return result;
         }
 
+
+        public int[] FindDiagonalOrder(int[][] matrix)
+        {
+            if (matrix == null || matrix.Length == 0)
+            {
+                return Array.Empty<int>();
+            }
+
+            int N= matrix.Length;
+            int M = matrix[0].Length;
+
+            Dictionary<int, List<int>> dict = new Dictionary<int, List<int>>();
+            for (int i = 0;i < N;i++)
+            {
+                for (int j = 0; j < M;j++)
+                {
+                    int sum = i + j;
+                    if(dict.ContainsKey(sum))
+                    {
+                        dict[sum].Add(matrix[i][j]);
+                    }
+                    else
+                    {
+                        dict[sum] = new List<int>() { matrix[i][j] };
+                    }
+                }
+            }
+
+            var res = new List<int>();
+
+            foreach (var item in dict)
+            {
+                if(item.Key %2 ==0)
+                {
+                    dict[item.Key].Reverse();
+                }
+
+                for (int i = 0; i < item.Value.Count; i++)
+                {
+                    res.Add(item.Value[i]);
+                }
+            }
+
+            return res.ToArray();
+        }
     }
 }
