@@ -83,7 +83,6 @@ namespace LeetCode.ArraysStrings
             return result;
         }
 
-
         public int[] FindDiagonalOrder(int[][] matrix)
         {
             if (matrix == null || matrix.Length == 0)
@@ -91,16 +90,16 @@ namespace LeetCode.ArraysStrings
                 return Array.Empty<int>();
             }
 
-            int N= matrix.Length;
+            int N = matrix.Length;
             int M = matrix[0].Length;
 
             Dictionary<int, List<int>> dict = new Dictionary<int, List<int>>();
-            for (int i = 0;i < N;i++)
+            for (int i = 0; i < N; i++)
             {
-                for (int j = 0; j < M;j++)
+                for (int j = 0; j < M; j++)
                 {
                     int sum = i + j;
-                    if(dict.ContainsKey(sum))
+                    if (dict.ContainsKey(sum))
                     {
                         dict[sum].Add(matrix[i][j]);
                     }
@@ -115,7 +114,7 @@ namespace LeetCode.ArraysStrings
 
             foreach (var item in dict)
             {
-                if(item.Key %2 ==0)
+                if (item.Key % 2 == 0)
                 {
                     dict[item.Key].Reverse();
                 }

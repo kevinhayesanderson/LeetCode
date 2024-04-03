@@ -1,7 +1,6 @@
 ﻿using LeetCode.ArraysStrings;
 using LeetCode.ArrayTopics;
 using LeetCode.LinkedList;
-using System;
 
 namespace LeetCode
 {
@@ -10,9 +9,9 @@ namespace LeetCode
         private static readonly ArrayTopicsTestClass array = new();
         private static readonly LinkedListTestClass linkedList = new();
         private static readonly ArraysStringsTestClass arraysStrings = new();
+
         protected Program()
         {
-
         }
 
         //private static void Main(string[] args)
@@ -75,7 +74,6 @@ namespace LeetCode
 
         //    //var res15 = array.ThirdMax_Sorting(new int[] { 1, 0, 2, 3, 4, 5, 6, 7, 8, 9,9,10,10, 10, 11,11,11,11, });
         //    //Console.WriteLine(res15);
-
 
         //    //var res16 = array.FindDisappearedNumbers(new int[] { 4, 3, 2, 7, 8, 2, 3, 1 });
         //    //Console.WriteLine(res16);

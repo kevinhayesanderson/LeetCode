@@ -4,14 +4,6 @@
 //ᵃᵇᶜᵈᵉᶠᵍʰⁱʲᵏˡᵐⁿᵒᵖʳˢᵗᵘᵛʷˣʸᶻ
 //ₐ ₑ ₕ ᵢ ⱼ ₖ ₗ ₘ ₙ ₒ ₚ ᵣ ₛ ₜ ᵤ ᵥ ₓ
 
-
-
-using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-using System.Numerics;
-using System.Runtime.InteropServices;
-
-
 internal class Program
 {
     private static void Main(string[] args)
@@ -37,8 +29,6 @@ internal class Program
 
         long mid = (long)res;
         int value = (int)mid;
-
-        
     }
 }
 
@@ -379,7 +369,7 @@ internal class Test_1
     /// </summary>
     /// <param name="n"></param>
     /// <returns></returns>
-    public List<int> Divisors_Naive(int n)//θ(n) 
+    public List<int> Divisors_Naive(int n)//θ(n)
     {
         var res = new List<int>();
         for (int i = 1; i <= n; i++)
@@ -393,12 +383,12 @@ internal class Test_1
     /// <summary>
     /// All the divisors are present in pairs.
     /// For example if n = 100, then the various pairs of divisors are: (1,100), (2,50), (4,25), (5,20), (10,10)
-    /// Using this fact we could speed up our program significantly. We, however, have to be careful if there are two equal divisors as in the case of (10, 10). In such case, we’d print only one of them. 
+    /// Using this fact we could speed up our program significantly. We, however, have to be careful if there are two equal divisors as in the case of (10, 10). In such case, we’d print only one of them.
     /// We iterate through all numbers from 1 to square root of n in this case.
     /// </summary>
     /// <param name="n"></param>
     /// <returns></returns>
-    public List<int> Divisors_Efficient_1(int n)//θ(sqrt(n)) 
+    public List<int> Divisors_Efficient_1(int n)//θ(sqrt(n))
     {
         var res = new List<int>();
         for (int i = 1; i * i <= n; i++)
@@ -420,7 +410,7 @@ internal class Test_1
     /// </summary>
     /// <param name="n"></param>
     /// <returns></returns>
-    public List<int> Divisors_Efficient_2(int n)//θ(sqrt(n)) 
+    public List<int> Divisors_Efficient_2(int n)//θ(sqrt(n))
     {
         var res = new List<int>();
         int i;
@@ -440,7 +430,6 @@ internal class Test_1
         }
         return res;
     }
-
 
     public List<int> Sieve_Naive(int n)//θ(n.sqrt(n))
     {
@@ -494,7 +483,7 @@ internal class Test_1
         return res;
     }
 
-    public List<int> Sieve_Efficient_2(int n)//θ(n.log(log(n))) 
+    public List<int> Sieve_Efficient_2(int n)//θ(n.log(log(n)))
     {
         var res = new List<int>();
         var isPrime = new bool[n + 1];
@@ -566,7 +555,7 @@ internal class Test_1
 
         while (n > 0)
         {
-            if(n % 2 != 0)// bit is 1
+            if (n % 2 != 0)// bit is 1
             {
                 res = res * x;
             }
@@ -593,7 +582,7 @@ internal class Test_1
             //check if n is even or odd
             // by doing bitwise AND operation
             // with 1. If the result is 0 then
-            // n is even. If the result is 1 
+            // n is even. If the result is 1
             // then n is odd.
             if ((n & 1) == 1)// bit is 1
             {
@@ -602,7 +591,7 @@ internal class Test_1
             x = x * x;
             n = n >> 1; //right-shift operator// meaning dividing by 2
         }
-        
+
         return res;
     }
 
@@ -610,10 +599,10 @@ internal class Test_1
     {
         double dividend = Math.Pow(n, r);
         double divisor = 1000000007;
-        
+
         double quotient = dividend / divisor;
         double remainder = dividend - (divisor * quotient);
-        return (long) remainder;
+        return (long)remainder;
     }
 
     //387420489
@@ -622,7 +611,7 @@ internal class Test_1
         //Your code here
         if (n == 0) return 0;
         if (p == 0) return 1;
-        return n * RecursivePower(n, p-1);
+        return n * RecursivePower(n, p - 1);
     }
 
     public int BSearch(int[] sortedArr, int n, int x)//θ(log(n)) //Auxiliary Space: θ(1)
@@ -652,9 +641,9 @@ internal class Test_1
     public string reverse(string s)
     {
         char[] chars = s.ToCharArray();
-        int i=0;
-        int j=s.Length-1;
-        while (i<j)
+        int i = 0;
+        int j = s.Length - 1;
+        while (i < j)
         {
             (chars[i], chars[j]) = (chars[j], chars[i]);
             i++;
@@ -748,7 +737,7 @@ internal class Test_1
             int mid = (low + high) / 2;
             if (sortedArr[mid] == x)
             {
-                if (mid != n-1  || sortedArr[mid] != sortedArr[mid+1])
+                if (mid != n - 1 || sortedArr[mid] != sortedArr[mid + 1])
                 {
                     return mid;
                 }
@@ -778,11 +767,11 @@ internal class Test_1
         while (low <= high)
         {
             int mid = (low + high) / 2;
-            if (binarySortedArr[mid] ==0)
+            if (binarySortedArr[mid] == 0)
                 low = mid + 1;
             else
             {
-                if (mid == 0 || binarySortedArr[mid - 1] ==0)
+                if (mid == 0 || binarySortedArr[mid - 1] == 0)
                 {
                     return n - mid;
                 }
@@ -849,7 +838,7 @@ internal class Test_1
             {
                 map[a[i]]++;
             }
-            else { map[a[i]] =1; }
+            else { map[a[i]] = 1; }
             if (map[a[i]] > k)
             {
                 res = a[i];

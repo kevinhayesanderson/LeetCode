@@ -35,7 +35,6 @@ namespace LeetCode.LinkedList
 
         public MyLinkedList()
         {
-
         }
 
         public int Get(int index)

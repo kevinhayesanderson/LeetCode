@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace TestProject
@@ -6,7 +5,6 @@ namespace TestProject
     [TestClass]
     public class UnitTest1
     {
-
         public void Main1()
         {
             var arr = new byte[100];
@@ -27,7 +25,8 @@ namespace TestProject
             // Or buffer.Slice(0, bytesRead).Span
         }
 
-        private static int Checksum(Span<byte> buffer) { return -1; }
+        private static int Checksum(Span<byte> buffer)
+        { return -1; }
 
         ////static Span<char> FormatGuid(Guid guid)
         ////{
@@ -127,7 +126,6 @@ namespace TestProject
             12
             */
 
-
             int number = 1024;
 
             unsafe
@@ -162,7 +160,7 @@ namespace TestProject
 
         internal unsafe struct Buffer
         {
-            public fixed char fixedBuffer[128];
+            public char fixedBuffer[128];
         }
 
         internal unsafe class Example
@@ -192,7 +190,6 @@ namespace TestProject
             }
         }
 
-        
         private static unsafe void Copy(byte[] source, int sourceOffset, byte[] target,
     int targetOffset, int count)
         {
@@ -303,11 +300,10 @@ namespace TestProject
                 bytes[1] = 43; // Throws IndexOutOfRangeException
             }
             finally { Marshal.FreeHGlobal(ptr); }
-
-
         }
 
-        private struct MutableStruct<T> { public T Value; }
+        private struct MutableStruct<T>
+        { public T Value; }
 
         [TestMethod]
         public void TestMethod2()
@@ -335,7 +331,6 @@ namespace TestProject
             Assert.AreEqual('w', worldSpan[0]);
             //worldSpan[0] = 'a'; // Error CS0200: indexer cannot be assigned to
         }
-
     }
 
     [TestClass]
@@ -387,6 +382,7 @@ namespace TestProject
             }
         }
     }
+
     // The example displays the following output:
     //      1   2   3   4   5   6   7   8   9  10  22  24  26  28  30  32  34  36
     //     38  40  63  66  69  72  75  78  81  84  87  90 124 128 132 136 140 144

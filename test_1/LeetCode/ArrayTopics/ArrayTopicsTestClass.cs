@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-
 namespace LeetCode.ArrayTopics
 {
     internal class ArrayTopicsTestClass
@@ -178,13 +177,11 @@ namespace LeetCode.ArrayTopics
             // which would be part of the modified array
             for (int left = 0; left <= length_ - possibleDups; left++)
             {
-
                 // Count the zeros
                 if (arr[left] == 0)
                 {
-
                     // Edge case: This zero can't be duplicated. We have no more space,
-                    // as left is pointing to the last element which could be included  
+                    // as left is pointing to the last element which could be included
                     if (left == length_ - possibleDups)
                     {
                         // For this zero we just copy it without duplication.
@@ -214,7 +211,6 @@ namespace LeetCode.ArrayTopics
                 }
             }
         }
-
 
         //Merge Sorted Array
         //nums1 = [1,2,3,0,0,0], m = 3, nums2 = [2,5,6], n = 3
@@ -600,7 +596,9 @@ namespace LeetCode.ArrayTopics
             }
             return w;
         }
-        #endregion
+
+        #endregion In-Place Array Operations
+
         public int HeightChecker(int[] heights)
         {
             int[] sortedArr = (int[])heights.Clone();
@@ -652,7 +650,6 @@ namespace LeetCode.ArrayTopics
             // While our window is in bounds
             while (right < nums.Length)
             {
-
                 // Increase numZeroes if the rightmost element is 0
                 if (nums[right] == 0)
                 {
@@ -717,15 +714,15 @@ namespace LeetCode.ArrayTopics
                 //// Treat the value as the new index
                 //int newIndex = Math.Abs(nums[i]) - 1;
                 //// Check the magnitude of value at this new index
-                //// If the magnitude is positive, make it negative 
-                //// thus indicating that the number nums[i] has 
+                //// If the magnitude is positive, make it negative
+                //// thus indicating that the number nums[i] has
                 //// appeared or has been visited.
                 //if (nums[newIndex] > 0)
                 //{
                 //    nums[newIndex] = nums[newIndex] * -1;
                 //}
 
-                nums[Math.Abs(nums[i])-1] = -Math.Abs(nums[Math.Abs(nums[i])-1]);
+                nums[Math.Abs(nums[i]) - 1] = -Math.Abs(nums[Math.Abs(nums[i]) - 1]);
             }
 
             var res = new List<int>();
@@ -735,7 +732,7 @@ namespace LeetCode.ArrayTopics
             {
                 if (nums[i] > 0)
                 {
-                    res.Add(i+1);
+                    res.Add(i + 1);
                 }
             }
 
