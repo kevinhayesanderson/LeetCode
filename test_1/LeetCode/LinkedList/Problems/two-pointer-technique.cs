@@ -16,15 +16,15 @@ namespace LeetCode.LinkedList.Problems
 
     public class TestClass
     {
-        [Test]
-        public void DetectCycleTest()
-        {
+        //[Test]
+        //public void DetectCycleTest()
+        //{
 
 
-            var node = new ListNode(3);
-            node.next = new ListNode(2);
-            n
-        }
+        //    var node = new ListNode(3);
+        //    node.next = new ListNode(2);
+        //    n
+        //}
     }
 
     internal class two_pointer_technique
