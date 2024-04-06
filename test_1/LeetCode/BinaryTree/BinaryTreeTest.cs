@@ -5,24 +5,23 @@ namespace LeetCode.BinaryTree
 {
     public class BinaryTreeTest
     {
-
         public IList<int> PostorderTraversal_MorrisTraversal(TreeNode root)
         {
             var nodes = new List<int>();
             while (root != null)
             {
-                if(root.right != null)
+                if (root.right != null)
                 {
                     TreeNode pre = root.right;
-                    while(pre.left != null && pre.left != root)
+                    while (pre.left != null && pre.left != root)
                     {
                         pre = pre.left;
                     }
 
-                    if(pre.left == null)
+                    if (pre.left == null)
                     {
                         pre.left = root;
-                        nodes.Insert(0,root.val);
+                        nodes.Insert(0, root.val);
                         root = root.right;
                     }
                     else
@@ -33,12 +32,13 @@ namespace LeetCode.BinaryTree
                 }
                 else
                 {
-                    nodes.Insert(0,root.val);
+                    nodes.Insert(0, root.val);
                     root = root.left;
                 }
             }
             return nodes;
         }
+
         public IList<int> InorderTraversal_MorrisTraversal(TreeNode root)
         {
             var nodes = new List<int>();
@@ -152,14 +152,14 @@ namespace LeetCode.BinaryTree
 
     public class TestClass
     {
-        BinaryTreeTest binaryTreeTest = new BinaryTreeTest();
+        private BinaryTreeTest binaryTreeTest = new BinaryTreeTest();
 
         [Test]
         public void PostorderTraversal_MorrisTraversal_test()
         {
             var tree = new TreeNode(1, null, new TreeNode(2, new TreeNode(3)));
             var res = binaryTreeTest.PostorderTraversal_MorrisTraversal(tree);
-            Assert.That(res, Is.EqualTo(new List<int>() { 3,2,1}));
+            Assert.That(res, Is.EqualTo(new List<int>() { 3, 2, 1 }));
         }
 
         [Test]
@@ -192,6 +192,7 @@ namespace LeetCode.BinaryTree
         public TreeNode left;
         public TreeNode right;
         public int val;
+
         public TreeNode(int val = 0, TreeNode left = null, TreeNode right = null)
         {
             this.val = val;
