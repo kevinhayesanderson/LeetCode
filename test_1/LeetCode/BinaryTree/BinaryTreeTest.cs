@@ -1,180 +1,285 @@
 ﻿using NUnit.Framework;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LeetCode.BinaryTree
 {
-    public class BinaryTreeTest
+    public class BFS
     {
-        public IList<int> PostorderTraversal_MorrisTraversal(TreeNode root)
+        public static IList<IList<int>> LevelOrder_Iterative(TreeNode root)
         {
-            var nodes = new List<int>();
-            while (root != null)
-            {
-                if (root.right != null)
-                {
-                    TreeNode pre = root.right;
-                    while (pre.left != null && pre.left != root)
-                    {
-                        pre = pre.left;
-                    }
+            var levels = new List<IList<int>>();
+            if (root == null) return levels;
 
-                    if (pre.left == null)
-                    {
-                        pre.left = root;
-                        nodes.Insert(0, root.val);
-                        root = root.right;
-                    }
-                    else
-                    {
-                        pre.left = null;
-                        root = root.left;
-                    }
-                }
-                else
+            var queue = new Queue<TreeNode>();
+            queue.Enqueue(root);
+            int level = 0;
+
+            while (queue.Count != 0)
+            {
+                levels.Add(new List<int>());
+
+                int level_length = queue.Count;
+                for (int i = 0; i < level_length; ++i)
                 {
-                    nodes.Insert(0, root.val);
-                    root = root.left;
+                    var node = queue.Dequeue();
+                    levels[level].Add(node.val);
+
+                    if (node.left != null)
+                        queue.Enqueue(node.left);
+                    if (node.right != null)
+                        queue.Enqueue(node.right);
                 }
+
+
+                level++;
             }
-            return nodes;
+
+            return levels;
         }
 
-        public IList<int> InorderTraversal_MorrisTraversal(TreeNode root)
+        public static IList<IList<int>> LevelOrder_Recursive(TreeNode root)
         {
-            var nodes = new List<int>();
-            while (root != null)
-            {
-                if (root.left != null)
-                {
-                    TreeNode pre = root.left;
-                    while (pre.right != null && pre.right != root)
-                    {
-                        pre = pre.right;
-                    }
+            var levels = new List<IList<int>>();
 
-                    if (pre.right == null)
+            void helper(TreeNode node, int level)
+            {
+                //start the current level
+                if (levels.Count == level)
+                {
+                    levels.Add(new List<int>());
+                }
+
+                //fulfil the current level
+                levels[level].Add(node.val);
+
+                if (node.left != null)
+                    helper(node.left, level + 1);
+                if (node.right != null)
+                    helper(node.right, level + 1);
+            }
+
+            if (root == null) return levels;
+
+            helper(root, 0);
+
+            return levels;
+        }
+    }
+
+    public class BottomUp
+    {
+        public static int MaxDepth(TreeNode root)
+        {
+            if (root is null) return 0;
+            return Math.Max(MaxDepth(root.left), MaxDepth(root.right)) + 1;
+        }
+    }
+
+    public class DFS
+    {
+        public static class InOrder
+        {
+            public static IList<int> InorderTraversal_MorrisTraversal(TreeNode root)
+            {
+                var nodes = new List<int>();
+                while (root != null)
+                {
+                    if (root.left != null)
                     {
-                        pre.right = root;
-                        root = root.left;
+                        TreeNode pre = root.left;
+                        while (pre.right != null && pre.right != root)
+                        {
+                            pre = pre.right;
+                        }
+
+                        if (pre.right == null)
+                        {
+                            pre.right = root;
+                            root = root.left;
+                        }
+                        else
+                        {
+                            pre.right = null;
+                            nodes.Add(root.val);
+                            root = root.right;
+                        }
                     }
                     else
                     {
-                        pre.right = null;
                         nodes.Add(root.val);
                         root = root.right;
                     }
                 }
-                else
-                {
-                    nodes.Add(root.val);
-                    root = root.right;
-                }
-            }
 
-            return nodes;
+                return nodes;
+            }
         }
 
-        public List<int> PreorderTraversal_iterative(TreeNode root)
+        public static class PostOrder
         {
-            Stack<TreeNode> stack = new Stack<TreeNode>();
-            List<int> output = new List<int>();
-            if (root == null)
+            public static IList<int> PostorderTraversal_MorrisTraversal(TreeNode root)
             {
+                var nodes = new List<int>();
+                while (root != null)
+                {
+                    if (root.right != null)
+                    {
+                        TreeNode pre = root.right;
+                        while (pre.left != null && pre.left != root)
+                        {
+                            pre = pre.left;
+                        }
+
+                        if (pre.left == null)
+                        {
+                            pre.left = root;
+                            nodes.Insert(0, root.val);
+                            root = root.right;
+                        }
+                        else
+                        {
+                            pre.left = null;
+                            root = root.left;
+                        }
+                    }
+                    else
+                    {
+                        nodes.Insert(0, root.val);
+                        root = root.left;
+                    }
+                }
+                return nodes;
+            }
+        }
+
+        public static class PreOrder
+        {
+            public static List<int> PreorderTraversal_iterative(TreeNode root)
+            {
+                Stack<TreeNode> stack = new Stack<TreeNode>();
+                List<int> output = new List<int>();
+                if (root == null)
+                {
+                    return output;
+                }
+
+                stack.Push(root);
+                while (stack.Count != 0)
+                {
+                    TreeNode node = stack.Pop();
+                    output.Add(node.val);
+                    if (node.right != null)
+                    {
+                        stack.Push(node.right);
+                    }
+                    if (node.left != null)
+                    {
+                        stack.Push(node.left);
+                    }
+                }
                 return output;
             }
 
-            stack.Push(root);
-            while (stack.Count != 0)
+            public static List<int> PreorderTraversal_MorrisTraversal(TreeNode root)
             {
-                TreeNode node = stack.Pop();
-                output.Add(node.val);
-                if (node.right != null)
+                List<int> nodes = new List<int>();
+                while (root != null)
                 {
-                    stack.Push(node.right);
-                }
-                if (node.left != null)
-                {
-                    stack.Push(node.left);
-                }
-            }
-            return output;
-        }
-
-        public List<int> PreorderTraversal_MorrisTraversal(TreeNode root)
-        {
-            List<int> nodes = new List<int>();
-            while (root != null)
-            {
-                if (root.left != null) //one step left
-                {
-                    //finding predecessor for root
-                    TreeNode pre = root.left;
-                    while (pre.right != null && pre.right != root)
+                    if (root.left != null) //one step left
                     {
-                        pre = pre.right;
+                        //finding predecessor for root
+                        TreeNode pre = root.left;
+                        while (pre.right != null && pre.right != root)
+                        {
+                            pre = pre.right;
+                        }
+                        //found predecessor, right most on first left subtree
+
+                        //if pre.right == null , create a cycle
+                        if (pre.right == null)
+                        {
+                            pre.right = root;
+                            nodes.Add(root.val);
+                            root = root.left;
+                        }
+                        else // break the cycle, go to right subtree
+                        {
+                            pre.right = null;
+                            root = root.right;
+                        }
                     }
-                    //found predecessor, right most on first left subtree
-
-                    //if pre.right == null , create a cycle
-                    if (pre.right == null)
+                    else //does not have a left child node, we simply add root's value to the resulting array, and move on to the right node.
                     {
-                        pre.right = root;
                         nodes.Add(root.val);
-                        root = root.left;
-                    }
-                    else // break the cycle, go to right subtree
-                    {
-                        pre.right = null;
                         root = root.right;
                     }
                 }
-                else //does not have a left child node, we simply add root's value to the resulting array, and move on to the right node.
+                return nodes;
+            }
+
+            public static IList<int> PreorderTraversal_recursive(TreeNode root)
+            {
+                var nodes = new List<int>();
+                if (root != null)
                 {
                     nodes.Add(root.val);
-                    root = root.right;
+                    if (root.left != null) nodes.AddRange(PreorderTraversal_recursive(root.left));
+                    if (root.right != null) nodes.AddRange(PreorderTraversal_recursive(root.right));
                 }
+                return nodes;
             }
-            return nodes;
-        }
-
-        public IList<int> PreorderTraversal_recursive(TreeNode root)
-        {
-            var nodes = new List<int>();
-            if (root != null)
-            {
-                nodes.Add(root.val);
-                if (root.left != null) nodes.AddRange(PreorderTraversal_recursive(root.left));
-                if (root.right != null) nodes.AddRange(PreorderTraversal_recursive(root.right));
-            }
-            return nodes;
         }
     }
 
     public class TestClass
     {
-        private BinaryTreeTest binaryTreeTest = new BinaryTreeTest();
+        [Test]
+        public void InorderTraversal_MorrisTraversal_test()
+        {
+            var tree = new TreeNode(1, null, new TreeNode(2, new TreeNode(3)));
+            var res = DFS.InOrder.InorderTraversal_MorrisTraversal(tree);
+            Assert.That(res, Is.EqualTo(new List<int>() { 1, 3, 2 }));
+        }
+
+        [Test]
+        public void LevelOrder_Recursive_test()
+        {
+            var tree = new TreeNode(3, new TreeNode(9), new TreeNode(20, new TreeNode(15), new TreeNode(7)));
+            var res = BFS.LevelOrder_Recursive(tree);
+            Assert.That(res, Is.EqualTo(new List<List<int>> { new List<int> { 3 }, new List<int> { 9, 20 }, new List<int> { 15, 7 } }));
+        }
+
+        [Test]
+        public void MaxDepth_BU_test()
+        {
+            var tree = new TreeNode(1, new TreeNode(2, new TreeNode(4), new TreeNode(5)), new TreeNode(3));
+            var res = BottomUp.MaxDepth(tree);
+            Assert.That(res, Is.EqualTo(3));
+        }
+
+        [Test]
+        public void MaxDepth_TD_test()
+        {
+            var tree = new TreeNode(1, new TreeNode(2, new TreeNode(4), new TreeNode(5)), new TreeNode(3));
+            var res = TopDown.MaxDepth(tree);
+            Assert.That(res, Is.EqualTo(3));
+        }
 
         [Test]
         public void PostorderTraversal_MorrisTraversal_test()
         {
             var tree = new TreeNode(1, null, new TreeNode(2, new TreeNode(3)));
-            var res = binaryTreeTest.PostorderTraversal_MorrisTraversal(tree);
+            var res = DFS.PostOrder.PostorderTraversal_MorrisTraversal(tree);
             Assert.That(res, Is.EqualTo(new List<int>() { 3, 2, 1 }));
-        }
-
-        [Test]
-        public void InorderTraversal_MorrisTraversal_test()
-        {
-            var tree = new TreeNode(1, null, new TreeNode(2, new TreeNode(3)));
-            var res = binaryTreeTest.InorderTraversal_MorrisTraversal(tree);
-            Assert.That(res, Is.EqualTo(new List<int>() { 1, 3, 2 }));
         }
 
         [Test]
         public void PreorderTraversal_iterative_test()
         {
             var tree = new TreeNode(1, null, new TreeNode(2, new TreeNode(3)));
-            var res = binaryTreeTest.PreorderTraversal_iterative(tree);
+            var res = DFS.PreOrder.PreorderTraversal_iterative(tree);
             Assert.That(res, Is.EqualTo(new List<int>() { 1, 2, 3 }));
         }
 
@@ -182,8 +287,73 @@ namespace LeetCode.BinaryTree
         public void PreorderTraversal_recursive_test()
         {
             var tree = new TreeNode(1, null, new TreeNode(2, new TreeNode(3)));
-            var res = binaryTreeTest.PreorderTraversal_recursive(tree);
+            var res = DFS.PreOrder.PreorderTraversal_recursive(tree);
             Assert.That(res, Is.EqualTo(new List<int>() { 1, 2, 3 }));
+        }
+    }
+
+    public class TopDown
+    {
+        public static int MaxDepth(TreeNode root)
+        {
+            int depth = 0;
+            if (root == null) return depth;
+
+            void helper(TreeNode node, int level)
+            {
+                depth = Math.Max(depth, level);
+                if (node.left == null && node.right == null) return;
+                if (node.left != null) helper(node.left, level + 1);
+                if (node.right != null) helper(node.right, level + 1);
+            }
+
+            helper(root, 1);
+
+            return depth;
+        }
+
+        public static bool IsSymmetric(TreeNode root)
+        {
+            var res = false;
+            if (root == null || root.left != root.right) return res;
+            
+            int maxdepth(TreeNode node)
+            {
+                if(node == null) return 0;
+                return Math.Max(maxdepth(node.left), maxdepth(node.left)) + 1;
+            }
+
+            var leftTreeDepth = maxdepth(root.left);
+            var rightTreeDepth = maxdepth(root.right);
+
+            if(leftTreeDepth == rightTreeDepth)
+            {
+                List<int> leftTreeValues = new List<int>();
+                List<int> rightTreeValues = new List<int>();
+
+                List<int> preOrderTraversal(TreeNode node)
+                {
+                    var values = new List<int>();
+                    if(node == null) return values;
+
+                    values.Add(node.val);
+                    if (node.left != null) values.AddRange(preOrderTraversal(node.left));
+                    if (node.right != null) values.AddRange(preOrderTraversal(node.right));
+
+                    return values;
+                }
+
+                leftTreeValues = preOrderTraversal(root.left);
+                rightTreeValues = preOrderTraversal(root.right);
+
+                if(leftTreeValues.Count != rightTreeValues.Count) return false;
+                for (int i = 0; i < leftTreeValues.Count; i++)
+                {
+                    res = leftTreeValues[i] == rightTreeValues[i];
+                }
+            }
+
+            return res;
         }
     }
 
@@ -198,6 +368,27 @@ namespace LeetCode.BinaryTree
             this.val = val;
             this.left = left;
             this.right = right;
+        }
+
+        public TreeNode Create(int?[] array)
+        {
+            TreeNode node = null;
+            for (int i = 0;i < array.Length; i= i+2)
+            {
+                if (array[i].HasValue)
+                    node  = new TreeNode( array[i].Value);
+                if (array[i+1].HasValue)
+                {
+                    node.left =  new TreeNode(array[i+1].Value);
+                }
+                if (array[i + 2].HasValue)
+                {
+                    node.right = new TreeNode(array[i + 2].Value);
+                }
+
+            }
+
+            return node;
         }
     }
 }
