@@ -31,7 +31,6 @@ namespace LeetCode.BinaryTree
                         queue.Enqueue(node.right);
                 }
 
-
                 level++;
             }
 
@@ -74,7 +73,47 @@ namespace LeetCode.BinaryTree
             if (root is null) return 0;
             return Math.Max(MaxDepth(root.left), MaxDepth(root.right)) + 1;
         }
+
+
+        //DFS // Bottom up
+        public int CountUnivalSubtrees(TreeNode root)
+        {
+            var count = 0;
+            if (root == null) return count;
+
+            bool dfs(TreeNode node)
+            {
+                if(node.left == null  && node.right == null)
+                {
+                    count++;
+                    return true;
+                }
+
+                var isUniVal = true;
+                if(node.left!= null)
+                {
+                    var left = dfs(node.left);
+                    isUniVal = isUniVal && left && node.val == node.left.val;
+                }
+
+                if (node.right != null)
+                {
+                    var right = dfs(node.right);
+                    isUniVal = isUniVal && right && node.val == node.right.val;
+                }
+
+                if(isUniVal) count++;
+
+                return isUniVal;
+            }
+
+            dfs(root);
+
+            return count;
+        }
     }
+
+}
 
     public class DFS
     {
@@ -293,6 +332,22 @@ namespace LeetCode.BinaryTree
 
     public class TopDown
     {
+        public static bool IsSymmetric(TreeNode root)
+        {
+            bool IsMirror(TreeNode left, TreeNode right)
+            {
+                if (left == null && right == null) return true;
+                if (left == null || right == null) return false;
+
+                return (left.val == right.val)
+                     && IsMirror(left.left, right.right)
+                     && IsMirror(left.right, right.left);
+            }
+
+            if (root == null) return false;
+            return IsMirror(root.left, root.right);
+        }
+
         public static int MaxDepth(TreeNode root)
         {
             int depth = 0;
@@ -311,34 +366,18 @@ namespace LeetCode.BinaryTree
             return depth;
         }
 
-        public static bool IsSymmetric(TreeNode root)
-        {
-            bool IsMirror(TreeNode left, TreeNode right)
-            {
-                if (left == null && right == null) return true;
-                if (left == null || right == null) return false;
-
-                return (left.val == right.val)
-                     && IsMirror(left.left, right.right)
-                     && IsMirror(left.right, right.left);
-            }
-
-            if (root == null) return false;
-            return IsMirror(root.left, root.right);
-        }
-
         public bool HasPathSum(TreeNode root, int targetSum)
         {
             if (root == null) return false;
 
             targetSum -= root.val;
 
-            if ((root.left == null) &&(root.right ==null))
+            if ((root.left == null) && (root.right == null))
             {
                 return targetSum == 0;
             }
 
-            return HasPathSum(root.left, targetSum) || HasPathSum(root.right , targetSum);
+            return HasPathSum(root.left, targetSum) || HasPathSum(root.right, targetSum);
         }
     }
 }
@@ -371,7 +410,6 @@ public class TreeNode
             {
                 node.right = new TreeNode(array[i + 2].Value);
             }
-
         }
 
         return node;
