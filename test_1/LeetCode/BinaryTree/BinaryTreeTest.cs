@@ -1,7 +1,6 @@
 ﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace LeetCode.BinaryTree
 {
@@ -316,51 +315,66 @@ namespace LeetCode.BinaryTree
         {
             bool IsMirror(TreeNode left, TreeNode right)
             {
-                if (left == null && right == null) return true; 
-                if(left == null || right == null) return false;
+                if (left == null && right == null) return true;
+                if (left == null || right == null) return false;
 
                 return (left.val == right.val)
                      && IsMirror(left.left, right.right)
                      && IsMirror(left.right, right.left);
             }
 
-            if(root == null) return false;
+            if (root == null) return false;
             return IsMirror(root.left, root.right);
         }
-    }
 
-    public class TreeNode
-    {
-        public TreeNode left;
-        public TreeNode right;
-        public int val;
-
-        public TreeNode(int val = 0, TreeNode left = null, TreeNode right = null)
+        public bool HasPathSum(TreeNode root, int targetSum)
         {
-            this.val = val;
-            this.left = left;
-            this.right = right;
-        }
+            if (root == null) return false;
 
-        public TreeNode Create(int?[] array)
-        {
-            TreeNode node = null;
-            for (int i = 0;i < array.Length; i= i+2)
+            targetSum -= root.val;
+
+            if ((root.left == null) &&(root.right ==null))
             {
-                if (array[i].HasValue)
-                    node  = new TreeNode( array[i].Value);
-                if (array[i+1].HasValue)
-                {
-                    node.left =  new TreeNode(array[i+1].Value);
-                }
-                if (array[i + 2].HasValue)
-                {
-                    node.right = new TreeNode(array[i + 2].Value);
-                }
-
+                return targetSum == 0;
             }
 
-            return node;
+            return HasPathSum(root.left, targetSum) || HasPathSum(root.right , targetSum);
         }
     }
+}
+
+public class TreeNode
+{
+    public TreeNode left;
+    public TreeNode right;
+    public int val;
+
+    public TreeNode(int val = 0, TreeNode left = null, TreeNode right = null)
+    {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+
+    public TreeNode Create(int?[] array)
+    {
+        TreeNode node = null;
+        for (int i = 0; i < array.Length; i = i + 2)
+        {
+            if (array[i].HasValue)
+                node = new TreeNode(array[i].Value);
+            if (array[i + 1].HasValue)
+            {
+                node.left = new TreeNode(array[i + 1].Value);
+            }
+            if (array[i + 2].HasValue)
+            {
+                node.right = new TreeNode(array[i + 2].Value);
+            }
+
+        }
+
+        return node;
+    }
+}
 }
