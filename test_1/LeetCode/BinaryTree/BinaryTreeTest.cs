@@ -314,46 +314,18 @@ namespace LeetCode.BinaryTree
 
         public static bool IsSymmetric(TreeNode root)
         {
-            var res = false;
-            if (root == null || root.left != root.right) return res;
-            
-            int maxdepth(TreeNode node)
+            bool IsMirror(TreeNode left, TreeNode right)
             {
-                if(node == null) return 0;
-                return Math.Max(maxdepth(node.left), maxdepth(node.left)) + 1;
+                if (left == null && right == null) return true; 
+                if(left == null || right == null) return false;
+
+                return (left.val == right.val)
+                     && IsMirror(left.left, right.right)
+                     && IsMirror(left.right, right.left);
             }
 
-            var leftTreeDepth = maxdepth(root.left);
-            var rightTreeDepth = maxdepth(root.right);
-
-            if(leftTreeDepth == rightTreeDepth)
-            {
-                List<int> leftTreeValues = new List<int>();
-                List<int> rightTreeValues = new List<int>();
-
-                List<int> preOrderTraversal(TreeNode node)
-                {
-                    var values = new List<int>();
-                    if(node == null) return values;
-
-                    values.Add(node.val);
-                    if (node.left != null) values.AddRange(preOrderTraversal(node.left));
-                    if (node.right != null) values.AddRange(preOrderTraversal(node.right));
-
-                    return values;
-                }
-
-                leftTreeValues = preOrderTraversal(root.left);
-                rightTreeValues = preOrderTraversal(root.right);
-
-                if(leftTreeValues.Count != rightTreeValues.Count) return false;
-                for (int i = 0; i < leftTreeValues.Count; i++)
-                {
-                    res = leftTreeValues[i] == rightTreeValues[i];
-                }
-            }
-
-            return res;
+            if(root == null) return false;
+            return IsMirror(root.left, root.right);
         }
     }
 
