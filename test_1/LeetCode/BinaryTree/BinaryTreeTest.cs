@@ -74,7 +74,6 @@ namespace LeetCode.BinaryTree
             return Math.Max(MaxDepth(root.left), MaxDepth(root.right)) + 1;
         }
 
-
         //DFS // Bottom up
         public int CountUnivalSubtrees(TreeNode root)
         {
@@ -83,14 +82,14 @@ namespace LeetCode.BinaryTree
 
             bool dfs(TreeNode node)
             {
-                if(node.left == null  && node.right == null)
+                if (node.left == null && node.right == null)
                 {
                     count++;
                     return true;
                 }
 
                 var isUniVal = true;
-                if(node.left!= null)
+                if (node.left != null)
                 {
                     var left = dfs(node.left);
                     isUniVal = isUniVal && left && node.val == node.left.val;
@@ -102,7 +101,7 @@ namespace LeetCode.BinaryTree
                     isUniVal = isUniVal && right && node.val == node.right.val;
                 }
 
-                if(isUniVal) count++;
+                if (isUniVal) count++;
 
                 return isUniVal;
             }
@@ -112,8 +111,6 @@ namespace LeetCode.BinaryTree
             return count;
         }
     }
-
-}
 
     public class DFS
     {
@@ -380,39 +377,38 @@ namespace LeetCode.BinaryTree
             return HasPathSum(root.left, targetSum) || HasPathSum(root.right, targetSum);
         }
     }
-}
 
-public class TreeNode
-{
-    public TreeNode left;
-    public TreeNode right;
-    public int val;
-
-    public TreeNode(int val = 0, TreeNode left = null, TreeNode right = null)
+    public class TreeNode
     {
-        this.val = val;
-        this.left = left;
-        this.right = right;
-    }
+        public TreeNode left;
+        public TreeNode right;
+        public int val;
 
-    public TreeNode Create(int?[] array)
-    {
-        TreeNode node = null;
-        for (int i = 0; i < array.Length; i = i + 2)
+        public TreeNode(int val = 0, TreeNode left = null, TreeNode right = null)
         {
-            if (array[i].HasValue)
-                node = new TreeNode(array[i].Value);
-            if (array[i + 1].HasValue)
-            {
-                node.left = new TreeNode(array[i + 1].Value);
-            }
-            if (array[i + 2].HasValue)
-            {
-                node.right = new TreeNode(array[i + 2].Value);
-            }
+            this.val = val;
+            this.left = left;
+            this.right = right;
         }
 
-        return node;
+        public TreeNode Create(int?[] array)
+        {
+            TreeNode node = null;
+            for (int i = 0; i < array.Length; i = i + 2)
+            {
+                if (array[i].HasValue)
+                    node = new TreeNode(array[i].Value);
+                if (array[i + 1].HasValue)
+                {
+                    node.left = new TreeNode(array[i + 1].Value);
+                }
+                if (array[i + 2].HasValue)
+                {
+                    node.right = new TreeNode(array[i + 2].Value);
+                }
+            }
+
+            return node;
+        }
     }
-}
 }
