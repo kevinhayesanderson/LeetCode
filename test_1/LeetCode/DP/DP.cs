@@ -32,5 +32,22 @@ namespace LeetCode.DP
 
             return costi(cost.Length);
         }
+        public int Tribonacci(int n)
+        {
+            var map = new Dictionary<int, int>();
+
+            int ti(int i)
+            {
+                if (i == 0) return 0;
+                if (i == 1 || i == 2) return 1;
+                if (!map.ContainsKey(i))
+                {
+                    map[i] = ti(i - 3) + ti(i - 2) + ti(i - 1);
+                }
+                return map[i];
+            }
+
+            return ti(n);
+        }
     }
 }
