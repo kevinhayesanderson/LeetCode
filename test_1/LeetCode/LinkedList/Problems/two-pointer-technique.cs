@@ -1,5 +1,4 @@
-﻿using NUnit.Framework;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace LeetCode.LinkedList.Problems
 {
@@ -7,6 +6,7 @@ namespace LeetCode.LinkedList.Problems
     {
         public int val;
         public ListNode next;
+
         public ListNode(int x)
         {
             val = x;
@@ -19,8 +19,6 @@ namespace LeetCode.LinkedList.Problems
         //[Test]
         //public void DetectCycleTest()
         //{
-
-
         //    var node = new ListNode(3);
         //    node.next = new ListNode(2);
         //    n
@@ -36,7 +34,7 @@ namespace LeetCode.LinkedList.Problems
 
             while (pointer != null)
             {
-                if(listNodes.Contains(pointer))
+                if (listNodes.Contains(pointer))
                 {
                     return true;
                 }
@@ -51,7 +49,7 @@ namespace LeetCode.LinkedList.Problems
         {
             ListNode slowPointer = head, fastPointer = head;
 
-            while (fastPointer != null && fastPointer.next != null) 
+            while (fastPointer != null && fastPointer.next != null)
             {
                 slowPointer = slowPointer.next;
                 fastPointer = fastPointer.next.next;
@@ -71,9 +69,9 @@ namespace LeetCode.LinkedList.Problems
 
             while (fastPointer != null && fastPointer.next != null)
             {
-                slowPointer= slowPointer.next;
+                slowPointer = slowPointer.next;
                 fastPointer = fastPointer.next.next;
-                if(slowPointer == fastPointer)
+                if (slowPointer == fastPointer)
                 {
                     return slowPointer;
                 }

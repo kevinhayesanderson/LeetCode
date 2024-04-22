@@ -49,5 +49,41 @@ namespace LeetCode.DP
 
             return ti(n);
         }
+        public int DeleteAndEarn(int[] nums)
+        {
+            if (nums.Length == 0) return 0;
+
+            var map  = new Dictionary<int, int>();
+
+            int pointsi(int i)
+            {
+                if(!map.ContainsKey(i))
+                {
+                    int points = 0;
+                    for (int j = 0; j < nums.Length; j++)
+                    {
+                        if (nums[j] == i || nums[j] != i + 1 || nums[j] != i - 1)
+                        {
+                            points += nums[j];
+                        }
+                    }
+                    map[i] = points;
+                }
+                return map[i];
+            }
+
+            var res = 0;
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if(pointsi(nums[i]) > res)
+                {
+                    res = pointsi(nums[i]);
+                }
+            }
+
+            return res;
+
+        }
     }
 }
