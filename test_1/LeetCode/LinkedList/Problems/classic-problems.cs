@@ -104,5 +104,69 @@ namespace LeetCode.LinkedList.Problems
             odd.next = evenHead;
             return head;
         }
+
+        public bool IsPalindrome(ListNode head)
+        {
+            if (head == null) return false;
+
+            //find two halves
+            ListNode endOffFirstHalf(ListNode head)
+            {
+                ListNode fast = head;
+                ListNode slow = head;
+                while (fast.next != null && fast.next.next != null)
+                {
+                    slow = slow.next;
+                    fast = fast.next;
+                }
+                return slow;
+            }
+
+            //reversing the second half
+            ListNode reverseList(ListNode head)
+            {
+                ListNode prev = null;
+                ListNode curr = head;
+                while (curr != null)
+                {
+                    var next = curr.next;
+                    curr.next = prev;
+                    prev = curr;
+                    curr = next;
+                }
+                return head;
+            }
+
+            //find two halves
+            ListNode firstHalfEnd = endOffFirstHalf(head);
+
+            //reversing the second half
+            ListNode secondHalfStart = reverseList(firstHalfEnd.next);
+
+            //compare the two halves
+            ListNode p1 = head;
+            ListNode p2 = secondHalfStart;
+
+            bool res = true;
+
+            while (res && p2 != null)
+            {
+                if (p1.val != p2.val)
+                {
+                    res = false;
+                }
+                p1 = p1.next;
+                p2 = p2.next;
+            }
+
+            //reverse the second half to intial state
+            firstHalfEnd.next = reverseList(secondHalfStart);
+
+            //return res
+            return res;
+        }
+
+        //time complexity o(N)
+        //time complexity o(1)
     }
 }
