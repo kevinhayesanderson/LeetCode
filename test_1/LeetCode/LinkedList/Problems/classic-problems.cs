@@ -117,7 +117,7 @@ namespace LeetCode.LinkedList.Problems
                 while (fast.next != null && fast.next.next != null)
                 {
                     slow = slow.next;
-                    fast = fast.next;
+                    fast = fast.next.next;
                 }
                 return slow;
             }
@@ -134,16 +134,16 @@ namespace LeetCode.LinkedList.Problems
                     prev = curr;
                     curr = next;
                 }
-                return head;
+                return prev;
             }
 
-            //find two halves
+            //1.find two halves
             ListNode firstHalfEnd = endOffFirstHalf(head);
 
-            //reversing the second half
+            //2.reversing the second half
             ListNode secondHalfStart = reverseList(firstHalfEnd.next);
 
-            //compare the two halves
+            //3.compare the two halves
             ListNode p1 = head;
             ListNode p2 = secondHalfStart;
 
@@ -159,7 +159,7 @@ namespace LeetCode.LinkedList.Problems
                 p2 = p2.next;
             }
 
-            //reverse the second half to intial state
+            //4.reverse the second half to intial state
             firstHalfEnd.next = reverseList(secondHalfStart);
 
             //return res
