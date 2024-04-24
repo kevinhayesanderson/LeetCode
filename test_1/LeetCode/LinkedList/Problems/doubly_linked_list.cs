@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using System;
 
 namespace LeetCode.LinkedList.Problems
 {
@@ -31,14 +32,12 @@ namespace LeetCode.LinkedList.Problems
         public class Node
         {
             public readonly int val;
-            public Node? Next { get; set; }
-            public Node? Previous { get; set; }
+            public Node Next { get; set; }
+            public Node Prev { get; set; }
 
-            public Node(int val)
+            public Node(int val = 0)
             {
                 this.val = val;
-                Previous = null;
-                Next = null;
             }
         }
 
@@ -48,122 +47,209 @@ namespace LeetCode.LinkedList.Problems
         public MyDLL()
         {
             size = 0;
-            head = new Node(0);
-            tail = new Node(0);
+            head = new Node(0); //sentinal
+            tail = new Node(0); //sentinal
             head.Next = tail;
-            tail.Previous = head;
+            tail.Prev = head;
         }
 
         public int Get(int index)
         {
-            if (index >= size) return -1;
-            if (index < size / 2)
+            if (index < 0 || index >= size) return -1;
+            Node curr = head;
+            for (int i = 0; i <= index; i++)
             {
-                int i = 0;
-                var curr = head;
-                while (i < index)
-                {
-                    curr = curr.Next;
-                    i++;
-                }
-
-                return curr.val;
+                curr = curr.Next;
             }
-            else
-            {
-                int i = size;
-                var curr = tail;
-                while (i > index)
-                {
-                    curr = curr.Previous;
-                    i--;
-                }
-
-                return curr.val;
-            }
+            return curr.val;
         }
 
         public void AddAtHead(int val)
         {
-            var newNode = new Node(val);
-            newNode.Next = head;
-            head = newNode;
-            size++;
+            AddAtIndex(0, val);
         }
 
         public void AddAtTail(int val)
         {
-            var newNode = new Node(val);
-            tail.Next = newNode;
-            tail = newNode;
-            size++;
+            AddAtIndex(size, val);
         }
 
         public void AddAtIndex(int index, int val)
         {
-            if (index >= size) return;
-            var newNode = new Node(val);
-            Node curr;
-            if (index < size / 2)
+            if (index < 0 || index > size) return;
+            Node curr = head;
+            for (int i = 0; i < index; i++)
             {
-                int i = 0;
-                curr = head;
-                while (i < index)
-                {
-                    curr = curr.Next;
-                    i++;
-                }
+                curr = curr.Next;
             }
-            else
-            {
-                int i = size;
-                curr = tail;
-                while (i > index)
-                {
-                    curr = curr.Previous;
-                    i--;
-                }
-            }
-            var prev = curr.Previous;
-            prev.Next = newNode;
-            newNode.Previous = prev;
-            newNode.Next = curr;
-            curr.Previous = newNode;
+            Node newNode = new Node(val);
+            newNode.Next = curr.Next;
+            newNode.Next.Prev = newNode;
+            curr.Next = newNode;
+            newNode.Prev = curr;
             size++;
         }
 
         public void DeleteAtIndex(int index)
         {
-            if (index >= size) return;
-
-            Node curr;
-            if (index < size / 2)
+            if (index < 0 || index >= size) return;
+            Node curr = head;
+            for (int i = 0; i <= index; i++)
             {
-                int i = 0;
-                curr = head;
-                while (i < index)
-                {
-                    curr = curr.Next;
-                    i++;
-                }
+                curr = curr.Next;
+            }
+            // delete curr;
+            curr.Next.Prev = curr.Prev;
+            curr.Prev.Next = curr.Next;
+            size--;
+        }
+    }
+
+    public class MyLinkedList_withoutSentinal
+    {
+        public class ListNode
+        {
+            public int val;
+            public ListNode next;
+            public ListNode prev;
+
+            public ListNode(int val = 0, ListNode next = null, ListNode prev = null)
+            {
+                this.val = val;
+                this.next = next;
+                this.prev = prev;
+            }
+        }
+
+        private ListNode head;
+        private ListNode tail;
+        private int size;
+
+        public MyLinkedList_withoutSentinal()
+        {
+            head = null;
+            tail = null;
+            size = 0;
+        }
+
+        public int Get(int index)
+        {
+            if (index < 0 || index >= size)
+                return -1;
+
+            ListNode curr = head;
+            for (int i = 0; i < index; i++)
+            {
+                curr = curr.next;
+            }
+            return curr.val;
+        }
+
+        public void AddAtHead(int val)
+        {
+            ListNode newnode = new ListNode(val);
+
+            if (head == null)
+            {
+                head = newnode;
+                tail = newnode;
             }
             else
             {
-                int i = size;
-                curr = tail;
-                while (i > index)
+                newnode.next = head;
+                head.prev = newnode;
+                head = newnode;
+            }
+            size++;
+            //  PrintLinkedList();
+        }
+
+        public void AddAtTail(int val)
+        {
+            ListNode newnode = new ListNode(val);
+
+            if (head == null)
+            {
+                head = newnode;
+                tail = newnode;
+            }
+            else
+            {
+                newnode.prev = tail;
+                tail.next = newnode;
+                tail = newnode;
+            }
+            size++;
+            //  PrintLinkedList();
+        }
+
+        public void AddAtIndex(int index, int val)
+        {
+            //check the index first
+            if (index < 0 || index > size)
+                return;
+
+            // Edge case
+            if (index == 0)
+            {
+                AddAtHead(val);
+            }
+            else if (index == size)
+            {
+                AddAtTail(val);
+            }
+            else
+            {
+                ListNode curr = head;
+                ListNode newnode = new ListNode(val);
+                for (int i = 0; i < index; i++)
                 {
-                    curr = curr.Previous;
-                    i--;
+                    curr = curr.next;
                 }
+                newnode.prev = curr.prev;
+                newnode.next = curr;
+                curr.prev.next = newnode;
+                curr.prev = newnode;
+                size++;
+                //  PrintLinkedList();
+            }
+        }
+
+        public void DeleteAtIndex(int index)
+        {
+            if (index < 0 || index >= size)
+                return;
+
+            ListNode curr = head;
+            for (int i = 0; i < index; i++)
+            {
+                curr = curr.next;
             }
 
-            var prev = curr.Previous;
-            var next = curr.Next;
+            //edge case
+            if (curr.prev != null)
+                curr.prev.next = curr.next;
+            else
+                head = curr.next;
 
-            prev.Next = next;
-            next.Previous = prev;
+            if (curr.next != null)
+                curr.next.prev = curr.prev;
+            else
+                tail = curr.prev;
+
             size--;
+            // PrintLinkedList();
+        }
+
+        public void PrintLinkedList()
+        {
+            ListNode current = head;
+            while (current != null)
+            {
+                Console.Write(current.val + "->");
+                current = current.next;
+            }
+            Console.WriteLine();
         }
     }
 }
