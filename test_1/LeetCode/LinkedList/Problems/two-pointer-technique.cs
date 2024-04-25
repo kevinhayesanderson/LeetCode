@@ -153,7 +153,7 @@ namespace LeetCode.LinkedList.Problems
             int i = 0;
             while (curr != null)
             {
-                // Advances first pointer so that the gap between first and second is n nodes apart
+                // Only advances this pointer after n node
                 if (i > n)
                 {
                     nodeBeforeRemoved = nodeBeforeRemoved.next;
