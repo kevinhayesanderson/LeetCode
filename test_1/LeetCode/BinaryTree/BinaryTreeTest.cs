@@ -114,6 +114,7 @@ namespace LeetCode.BinaryTree
 
     public class DFS
     {
+        //left-root-right
         public static class InOrder
         {
             public static IList<int> InorderTraversal_MorrisTraversal(TreeNode root)
@@ -124,6 +125,7 @@ namespace LeetCode.BinaryTree
                     if (root.left != null)
                     {
                         TreeNode pre = root.left;
+                        //In current's left subtree, make current the right child of the rightmost node
                         while (pre.right != null && pre.right != root)
                         {
                             pre = pre.right;
@@ -143,15 +145,47 @@ namespace LeetCode.BinaryTree
                     }
                     else
                     {
-                        nodes.Add(root.val);
+                        nodes.Add(root.val); // current does not have left child//Add current’s value
                         root = root.right;
                     }
                 }
 
                 return nodes;
             }
+
+            public static List<int> DFS_InOrder_MT(TreeNode root)
+            {
+                var values = new List<int>();
+                if (root == null)
+                    return values;
+                while (root != null)
+                {
+                    if (root.left != null)
+                    {
+                        var original_left = root.left;
+                        var rightmost = root.left; //rightmost leaf of the left subtree
+                        while (rightmost.right != null)
+                            rightmost = rightmost.right;
+                        //rewire logic
+                        rightmost.right = root;
+                        root.left = null;
+                        root = original_left;
+                    }
+                    else
+                    {
+                        values.Add(root.val);
+                        root = root.right;
+                    }
+                }
+
+                return values;
+            }
+
+            //Time Complexity O(n)
+            //Space Complexity O(1)
         }
 
+        //left-right-root
         public static class PostOrder
         {
             public static IList<int> PostorderTraversal_MorrisTraversal(TreeNode root)
@@ -189,6 +223,7 @@ namespace LeetCode.BinaryTree
             }
         }
 
+        //root-left-right
         public static class PreOrder
         {
             public static List<int> PreorderTraversal_iterative(TreeNode root)

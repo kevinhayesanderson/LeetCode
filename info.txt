@@ -1,0 +1,117 @@
+1. Merge Two Sorted Lists
+2. Generate Parentheses
+3. Merge k Sorted Lists
+4. Remove Duplicates from Sorted Array
+5. Find the Index of the First Occurrence in a String
+6. Divide Two Integers
+7. Search in Rotated Sorted Array
+8. Find First and Last Position of Element in Sorted Array
+9. Valid Sudoku
+10. Count and Say
+11. First Missing Positive
+12. Trapping Rain Water
+13. Wildcard Matching
+14. Permutations
+15. Rotate Image
+16. Group Anagrams
+17. Pow(x, n)
+18. Maximum Subarray
+19. Spiral Matrix
+20. Jump Game
+LeetCode Problems:
+- Trapping Rain Water (#42)
+- Longest Substring Without Repeating Characters (#3)
+- Squares of a Sorted Array (#977)
+
+2️⃣ Sliding Window: A technique for finding a subarray or substring with a specific property by sliding a window of fixed size across an array or string.
+
+LeetCode Problems:
+- Maximum Sum of distinct Subarray with length k (#2561)
+- Fruit into baskets(#904)
+- Minimum window substring (76)
+
+3️⃣ Tree Breadth First Search: Traversing a tree level by level, exploring all nodes at each level before moving to the next level, typically using a queue data structure.
+
+LeetCode Problems:
+- Binary Inorder Traversal (94)
+- Binary Tree Level Order Traversal (104)
+- Balanced Binary Tree (110)
+
+4️⃣ Fast & Slow Pointers: Employing two pointers to traverse a sequence at different speeds, useful for tasks like detecting cycles in linked lists or finding specific positions in the sequence.
+
+LeetCode Problems:
+- Happy Number (#202)
+- Subarray Sum Equals K (#560)
+- Intersection of Two Linked Lists (#160)
+
+5️⃣ Merge Intervals: Merging overlapping intervals in a collection, commonly used in problems dealing with interval intersection or overlap detection.
+
+LeetCode Problems:
+- Non-overlapping Intervals (#435)
+- Minimum Number of Arrows to Burst Balloons (#452)
+- Employee Free Time (#759)
+
+1. Two-Pointer Technique: Efficiently solve problems involving arrays or linked lists by using two pointers at different positions (typically at the start and end) to traverse and manipulate data, reducing complexity from O(n²) to O(n) for certain tasks.
+
+2. Binary Search: An indispensable algorithm for searching in a sorted array, binary search divides the search interval in half repeatedly, reducing the search time from O(n) to O(log n), showcasing its power in handling large datasets efficiently.
+
+3. Topological Sorting: Essential for understanding dependencies. In tasks or projects with a set of steps or modules that have prerequisites, topological sorting helps determine the order in which these tasks should be undertaken, critical for applications like task scheduling and resolving dependency conflicts.
+
+4. Sliding Window: This technique is vital for array/string problems where you need to find or compute something among all the contiguous subarrays/substrings of a given size. It optimizes brute force solutions, effectively reducing time complexity for problems involving contiguous sequences of data.
+
+5. BFS/DFS (Breadth-First Search/Depth-First Search): Fundamental algorithms for tree and graph traversal, allowing for systematic exploration of nodes and edges. BFS is used to find the shortest path in unweighted graphs, while DFS is used for traversing or searching tree or graph data structures, pivotal for solving complex connectivity and pathfinding problems.
+
+https://www.interviewcake.com/
+https://www.pramp.com/#/
+https://www.interviewbit.com/practice/
+
+Top K Elementa
+Sliding Window Algo
+Backtracking
+DP
+BFS & DFS
+
+
+1. How will you design a Hotel booking application like AirBnB?
+
+Refer to this → https://lnkd.in/gk-T7rGy
+
+2. How will you design a Stack Overflow clone?
+
+Refer to this → https://lnkd.in/gakYwyXB
+
+3. How will you design a ticket booking system like BookmyShow?
+
+Refer to this → https://lnkd.in/g-MtGkkX
+
+4. How will you design a BlackJack Card Game?
+
+Refer to this → https://lnkd.in/ggvP9VpU
+
+5. How will you design a board game like chess?
+
+Refer to this → https://lnkd.in/g3DnBsA3
+
+6. How will you create a file-sharing system like Google Drive/ Dropbox?
+
+Refer to this → https://lnkd.in/ghmRS6JZ
+
+7. How will you design a URL shortener like bit(dot)ly or goo(dot)gl?
+
+Refer to this → https://lnkd.in/gXEcvQEX
+
+8. How will you design an ATM?
+
+Refer to this → https://lnkd.in/gsGPgZsJ
+
+9. How will you design a Vending Machine in Java?
+
+Refer to this → https://lnkd.in/gDYft4Mi
+
+10. How will you design a ride-sharing app like Uber or Ola?
+
+Refer to this → https://lnkd.in/g2gsjPFD
+
+11. How will you design an autocomplete feature?
+
+Refer to this → https://lnkd.in/gk2vvMn5
