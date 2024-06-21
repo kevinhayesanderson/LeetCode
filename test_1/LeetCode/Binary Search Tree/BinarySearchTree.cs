@@ -62,5 +62,9 @@ namespace LeetCode.Binary_Search_Tree
 
             return true;
         }
+
+        public TreeNode InorderSuccessor(TreeNode root, TreeNode p)
+        {
+        }
     }
 }
