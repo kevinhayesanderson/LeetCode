@@ -54,9 +54,7 @@ namespace LeetCode.Heaps
                 // its value will be exchanged with that of the parent node
                 while (minHeap[index] < minHeap[parent] && index > 1)
                 {
-                    int temp = minHeap[index];
-                    minHeap[index] = minHeap[parent];
-                    minHeap[parent] = temp;
+                    (minHeap[parent], minHeap[index]) = (minHeap[index], minHeap[parent]);
                     index = parent;
                     parent = index / 2;
                 }
