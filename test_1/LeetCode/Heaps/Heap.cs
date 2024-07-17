@@ -10,10 +10,10 @@ namespace LeetCode.Heaps
         {
             // Create a complete binary tree using an array
             // Then use the binary tree to construct a Heap
-            int[] minHeap;
+            readonly int[] minHeap;
             // the number of elements is needed when instantiating an array
             // heapSize records the size of the array
-            int heapSize;
+            readonly int heapSize;
             // realSize records the number of elements in the Heap
             int realSize = 0;
 
@@ -28,7 +28,7 @@ namespace LeetCode.Heaps
             }
 
             // Function to add an element
-            public void add(int element)
+            public void Add(int element)
             {
                 realSize++;
                 // If the number of elements in the Heap exceeds the preset heapSize
@@ -49,25 +49,25 @@ namespace LeetCode.Heaps
                 // index of the parent node of any node is [index of the node / 2]
                 // index of the left child node is [index of the node * 2]
                 // index of the right child node is [index of the node * 2 + 1]
-                int parent = index / 2;
+                int parentIndex = index / 2;
                 // If the newly added element is smaller than its parent node,
                 // its value will be exchanged with that of the parent node
-                while (minHeap[index] < minHeap[parent] && index > 1)
+                while (minHeap[index] < minHeap[parentIndex] && index > 1)
                 {
-                    (minHeap[parent], minHeap[index]) = (minHeap[index], minHeap[parent]);
-                    index = parent;
-                    parent = index / 2;
+                    (minHeap[parentIndex], minHeap[index]) = (minHeap[index], minHeap[parentIndex]);
+                    index = parentIndex;
+                    parentIndex = index / 2;
                 }
             }
 
             // Get the top element of the Heap
-            public int peek()
+            public int Peek()
             {
                 return minHeap[1];
             }
 
             // Delete the top element of the Heap
-            public int pop()
+            public int Pop()
             {
                 // If the number of elements in the current Heap is 0,
                 // print "Don't have any elements" and return a default value
@@ -99,17 +99,13 @@ namespace LeetCode.Heaps
                         {
                             if (minHeap[left] < minHeap[right])
                             {
-                                int temp = minHeap[left];
-                                minHeap[left] = minHeap[index];
-                                minHeap[index] = temp;
+                                (minHeap[index], minHeap[left]) = (minHeap[left], minHeap[index]);
                                 index = left;
                             }
                             else
                             {
                                 // maxHeap[left] >= maxHeap[right]
-                                int temp = minHeap[right];
-                                minHeap[right] = minHeap[index];
-                                minHeap[index] = temp;
+                                (minHeap[index], minHeap[right]) = (minHeap[right], minHeap[index]);
                                 index = right;
                             }
                         }
@@ -123,12 +119,12 @@ namespace LeetCode.Heaps
             }
 
             // return the number of elements in the Heap
-            public int size()
+            public int Size()
             {
                 return realSize;
             }
 
-            public String toString()
+            public override string ToString()
             {
                 if (realSize == 0)
                 {

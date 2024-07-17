@@ -10,19 +10,19 @@ namespace LeetCode.Heaps
         public void MinHeapTest()
         {
             MinHeap minHeap = new(3);
-            minHeap.add(3);
-            minHeap.add(1);
-            minHeap.add(2);
+            minHeap.Add(3);
+            minHeap.Add(1);
+            minHeap.Add(2);
             Assert.Multiple(() =>
             {
-                Assert.That(minHeap.toString(), Is.EqualTo("[1,3,2]"));
-                Assert.That(minHeap.peek(), Is.EqualTo(1));
-                Assert.That(minHeap.pop(), Is.EqualTo(1));
-                Assert.That(minHeap.toString(), Is.EqualTo("[2,3]"));
+                Assert.That(minHeap.ToString(), Is.EqualTo("[1,3,2]"));
+                Assert.That(minHeap.Peek(), Is.EqualTo(1));
+                Assert.That(minHeap.Pop(), Is.EqualTo(1));
+                Assert.That(minHeap.ToString(), Is.EqualTo("[2,3]"));
             });
-            minHeap.add(4);
-            minHeap.add(5);
-            Assert.That(minHeap.toString(), Is.EqualTo("[2,3,4]"));
+            minHeap.Add(4);
+            minHeap.Add(5);
+            Assert.That(minHeap.ToString(), Is.EqualTo("[2,3,4]"));
         }
 
         [Test]
