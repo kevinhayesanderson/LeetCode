@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System.Collections.Generic;
+using System.Linq;
 using static LeetCode.Heaps.Heap;
 
 namespace LeetCode.Heaps
@@ -44,6 +45,14 @@ namespace LeetCode.Heaps
             maxheap.add(4);
             maxheap.add(5);
             Assert.That(maxheap.toString(), Is.EqualTo("[5,4]"));
+        }
+
+        [Test]
+        public void HeapifyTest()
+        {
+            var minHeapArray = MinHeap.Heapify([60, 50, 80, 40, 30, 10, 70, 20, 90]);
+            Assert.That(minHeapArray.Skip(1).ToArray(),
+                Is.EquivalentTo(new int[] { 10, 30, 20, 50, 80, 70, 40, 90, 60 }));
         }
     }
 

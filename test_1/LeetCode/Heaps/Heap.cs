@@ -10,12 +10,14 @@ namespace LeetCode.Heaps
         {
             // Create a complete binary tree using an array
             // Then use the binary tree to construct a Heap
-            readonly int[] minHeap;
+            private readonly int[] minHeap;
+
             // the number of elements is needed when instantiating an array
             // heapSize records the size of the array
-            readonly int heapSize;
+            private readonly int heapSize;
+
             // realSize records the number of elements in the Heap
-            int realSize = 0;
+            private int realSize = 0;
 
             public MinHeap(int heapSize)
             {
@@ -28,7 +30,7 @@ namespace LeetCode.Heaps
             }
 
             // Function to add an element
-            public void Add(int element)
+            public void Add(int element)//O(nlog(n))
             {
                 realSize++;
                 // If the number of elements in the Heap exceeds the preset heapSize
@@ -67,7 +69,7 @@ namespace LeetCode.Heaps
             }
 
             // Delete the top element of the Heap
-            public int Pop()
+            public int Pop()//O(nlog(n))
             {
                 // If the number of elements in the current Heap is 0,
                 // print "Don't have any elements" and return a default value
@@ -144,6 +146,43 @@ namespace LeetCode.Heaps
                     return sb.ToString();
                 }
             }
+
+            public static int[] Heapify(int[] array)//O(n)
+            {
+                var heap = new int[array.Length + 1];
+                array.CopyTo(heap, 1);
+
+                var current = heap.Length - 1 / 2;
+
+                while (current > 0)
+                {
+                    //Percolate down
+                    int i = current;
+                    while (2 * i < heap.Length)
+                    {
+                        //Swap right child
+                        if ((2 * i + 1 < heap.Length) &&
+                            heap[2 * i + 1] < heap[2 * i] &&
+                            heap[2 * i + 1] < heap[i])
+                        {
+                            (heap[2 * i + 1], heap[i]) = (heap[i], heap[2 * i + 1]);
+                            i = 2 * i + 1;
+                        }
+                        //Swap left child
+                        else if (heap[2 * i] < heap[i])
+                        {
+                            (heap[2 * i], heap[i]) = (heap[i], heap[2 * i]);
+                            i = 2 * i;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    current--;
+                }
+                return heap;
+            }
         }
 
         // Implementing "Max Heap"
@@ -151,12 +190,14 @@ namespace LeetCode.Heaps
         {
             // Create a complete binary tree using an array
             // Then use the binary tree to construct a Heap
-            int[] maxHeap;
+            private int[] maxHeap;
+
             // the number of elements is needed when instantiating an array
             // heapSize records the size of the array
-            int heapSize;
+            private int heapSize;
+
             // realSize records the number of elements in the Heap
-            int realSize = 0;
+            private int realSize = 0;
 
             public MaxHeap(int heapSize)
             {
