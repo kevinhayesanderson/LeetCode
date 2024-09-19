@@ -10,6 +10,8 @@ internal class Program
     {
         Test_1 test_1 = new Test_1();
 
+        _ = test_1.FizzBuzz(15);
+
         //var res = test_1.NoOfDigits(456);
 
         //var res = test_1.IsPalindrome(45654);
@@ -34,6 +36,20 @@ internal class Program
 
 internal class Test_1
 {
+    public IList<string> FizzBuzz(int n)
+    {
+        string[] ans = new string[n];
+        for (int i = 0; i < n; i++)
+        {
+            if ((i + 1) % 3 == 0)
+                ans[i] = "Fizz";
+            if ((i + 1) % 5 == 0)
+                ans[i] = ans[i] == null ? "Buzz" : ans[i] + "Buzz";
+            if (ans[i] == null)
+                ans[i] = (i + 1).ToString();
+        }
+        return ans;
+    }
     public bool IsPalindrome(int n) //θ(no of digits in n)
     {
         int rev = 0;

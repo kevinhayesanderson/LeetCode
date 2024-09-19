@@ -47,12 +47,14 @@ namespace LeetCode.Heaps
             Assert.That(maxheap.toString(), Is.EqualTo("[5,4]"));
         }
 
+        internal static readonly int[] expected = [10, 30, 20, 50, 80, 70, 40, 90, 60];
+
         [Test]
         public void HeapifyTest()
         {
             var minHeapArray = MinHeap.Heapify([60, 50, 80, 40, 30, 10, 70, 20, 90]);
             Assert.That(minHeapArray.Skip(1).ToArray(),
-                Is.EquivalentTo(new int[] { 10, 30, 20, 50, 80, 70, 40, 90, 60 }));
+                Is.EquivalentTo(expected));
         }
     }
 
