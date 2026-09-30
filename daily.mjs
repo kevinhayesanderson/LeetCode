@@ -7,6 +7,13 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Load .env if present
+try {
+  process.loadEnvFile(path.join(__dirname, '.env'));
+} catch (e) {
+  // ignore
+}
+
 // Colors for terminal output
 const bold = (s) => `\x1b[1m${s}\x1b[0m`;
 const green = (s) => `\x1b[32m${s}\x1b[0m`;
@@ -103,6 +110,42 @@ async function fetchUserStatus() {
   return data?.data?.userStatus || null;
 }
 
+// Get user profile submission stats
+async function fetchUserStats(username) {
+  const query = `query userProfileUserQuestionProgressV2($userSlug: String!) {
+    userProfileUserQuestionProgressV2(userSlug: $userSlug) {
+      numAcceptedQuestions {
+        difficulty
+        count
+      }
+      numFailedQuestions {
+        difficulty
+        count
+      }
+      numUntouchedQuestions {
+        difficulty
+        count
+      }
+    }
+  }`;
+  const data = await queryLeetCode(query, { userSlug: username });
+  return data?.data?.userProfileUserQuestionProgressV2 || null;
+}
+
+// Get recent AC submissions
+async function fetchRecentAcSubmissions(username, limit = 5) {
+  const query = `query recentAcSubmissions($username: String!, $limit: Int!) {
+    recentAcSubmissionList(username: $username, limit: $limit) {
+      id
+      title
+      titleSlug
+      timestamp
+    }
+  }`;
+  const data = await queryLeetCode(query, { username, limit });
+  return data?.data?.recentAcSubmissionList || [];
+}
+
 // Get today's ISO date string (YYYY-MM-DD)
 function getTodayIso(offsetDays = 0) {
   const now = new Date();
@@ -151,9 +194,23 @@ async function showToday() {
   const userStatus = await fetchUserStatus();
   if (userStatus && userStatus.isSignedIn) {
     console.log(green(`  ✓ LeetCode Logged In as: ${bold(userStatus.username)}${userStatus.isPremium ? ' [Premium]' : ''}`));
+    const stats = await fetchUserStats(userStatus.username);
+    if (stats?.numAcceptedQuestions) {
+      const counts = stats.numAcceptedQuestions;
+      const easy = counts.find((c) => c.difficulty === 'EASY')?.count || 0;
+      const med = counts.find((c) => c.difficulty === 'MEDIUM')?.count || 0;
+      const hard = counts.find((c) => c.difficulty === 'HARD')?.count || 0;
+      const total = easy + med + hard;
+      console.log(`    Total Solved: ${bold(total)} (${green('Easy: ' + easy)}, ${yellow('Med: ' + med)}, ${red('Hard: ' + hard)})`);
+    }
+    const recent = await fetchRecentAcSubmissions(userStatus.username, 3);
+    if (recent.length > 0) {
+      console.log(`    Recent Accepted: ${recent.map((r) => cyan(r.title)).join(', ')}`);
+    }
+    console.log('');
   } else {
     console.log(yellow(`  ℹ LeetCode Session: Using public API mode.`));
-    console.log(gray(`    Tip: Set LEETCODE_SESSION in your environment or mcp_config.json for private tracking.\n`));
+    console.log(gray(`    Tip: LEETCODE_SESSION is configured in .env and mcp_config.json.\n`));
   }
 
   // 1. Roadmap Target Problem
