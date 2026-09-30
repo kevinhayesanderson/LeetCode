@@ -1,0 +1,16 @@
+{
+  "name": "leetcode-daily",
+  "version": "1.0.0",
+  "description": "Daily LeetCode Problem Pointer & Scaffolder (Go + Rust) based on Kevin's 4-Phase Systems Engineering Roadmap",
+  "type": "module",
+  "main": "daily.mjs",
+  "scripts": {
+    "today": "node daily.mjs today",
+    "point": "node daily.mjs point",
+    "scaffold": "node daily.mjs scaffold",
+    "plan": "node daily.mjs plan",
+    "status": "node daily.mjs status"
+  },
+  "author": "Kevin",
+  "license": "MIT"
+}
