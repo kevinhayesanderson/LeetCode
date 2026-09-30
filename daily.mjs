@@ -324,6 +324,9 @@ async function scaffoldProblem(arg) {
 
   // Extract Go and Rust snippets
   let goCode = (problem.codeSnippets || []).find((s) => s.lang === 'Go')?.code || `// func solution(...) {\n// }\n`;
+  if (goCode && !goCode.includes('panic("not implemented")')) {
+    goCode = goCode.replace(/\{\s*\}/g, '{\n\tpanic("not implemented")\n}');
+  }
   let rustCode = (problem.codeSnippets || []).find((s) => s.lang === 'Rust')?.code || `pub struct Solution;\nimpl Solution {\n}\n`;
   if (rustCode && !rustCode.includes('todo!')) {
     rustCode = rustCode.replace(/\{\s*\}/g, '{\n        todo!()\n    }');
@@ -375,6 +378,19 @@ fn main() {
 `;
   fs.writeFileSync(path.join(targetDir, 'solution.rs'), rustContent, 'utf8');
   console.log(green(`  ✓ Generated solution.rs`));
+
+  // Register in root Cargo.toml if not already present
+  const cargoPath = path.join(__dirname, 'Cargo.toml');
+  if (fs.existsSync(cargoPath)) {
+    const cargoContent = fs.readFileSync(cargoPath, 'utf8');
+    const binName = `p${probNum}`;
+    if (!cargoContent.includes(`name = "${binName}"`)) {
+      const relPath = path.relative(__dirname, path.join(targetDir, 'solution.rs')).replace(/\\/g, '/');
+      const binEntry = `\n[[bin]]\nname = "${binName}"\npath = "${relPath}"\n`;
+      fs.appendFileSync(cargoPath, binEntry, 'utf8');
+      console.log(green(`  ✓ Registered [[bin]] "${binName}" in Cargo.toml`));
+    }
+  }
 
   // 3. Generate README.md
   const plainText = htmlToPlainText(problem.content);
