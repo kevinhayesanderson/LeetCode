@@ -325,6 +325,9 @@ async function scaffoldProblem(arg) {
   // Extract Go and Rust snippets
   let goCode = (problem.codeSnippets || []).find((s) => s.lang === 'Go')?.code || `// func solution(...) {\n// }\n`;
   let rustCode = (problem.codeSnippets || []).find((s) => s.lang === 'Rust')?.code || `pub struct Solution;\nimpl Solution {\n}\n`;
+  if (rustCode && !rustCode.includes('todo!')) {
+    rustCode = rustCode.replace(/\{\s*\}/g, '{\n        todo!()\n    }');
+  }
 
   // 1. Generate main.go
   const goContent = `package main
