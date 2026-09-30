@@ -1,0 +1,35 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug Current Go File",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "${file}"
+    },
+    {
+      "name": "Debug Current Go Test",
+      "type": "go",
+      "request": "launch",
+      "mode": "test",
+      "program": "${fileDirname}"
+    },
+    {
+      "name": "Debug Current Rust File (rustc)",
+      "type": "lldb",
+      "request": "launch",
+      "program": "${fileDirname}/${fileBasenameNoExtension}.exe",
+      "cwd": "${fileDirname}",
+      "preLaunchTask": "rustc: build current file"
+    },
+    {
+      "name": "Debug Current Rust Test (rustc)",
+      "type": "lldb",
+      "request": "launch",
+      "program": "${fileDirname}/test_${fileBasenameNoExtension}.exe",
+      "cwd": "${fileDirname}",
+      "preLaunchTask": "rustc: build current test"
+    }
+  ]
+}
