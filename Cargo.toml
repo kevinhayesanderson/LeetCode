@@ -12,3 +12,7 @@ path = "leetcode/01_two_pointers_and_sliding_window/167_two_sum_ii_input_array_i
 [[bin]]
 name = "p15"
 path = "leetcode/01_two_pointers_and_sliding_window/15_3sum/solution.rs"
+
+[[bin]]
+name = "p1"
+path = "leetcode/00_warmup/1_two_sum/solution.rs"
