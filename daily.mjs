@@ -8,13 +8,22 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Load .env if present
-try {
-  process.loadEnvFile(path.join(__dirname, '.env'));
-} catch (e) {
-  // ignore
+const envPath = path.join(__dirname, '.env');
+if (fs.existsSync(envPath)) {
+  try {
+    process.loadEnvFile(envPath);
+  } catch (e) {
+    const content = fs.readFileSync(envPath, 'utf8');
+    for (const line of content.split('\n')) {
+      const match = line.match(/^\s*([\w.-]+)\s*=\s*(.*)?\s*$/);
+      if (match) {
+        process.env[match[1]] = match[2].trim();
+      }
+    }
+  }
 }
 
-// Colors for terminal output
+// Terminal styling
 const bold = (s) => `\x1b[1m${s}\x1b[0m`;
 const green = (s) => `\x1b[32m${s}\x1b[0m`;
 const cyan = (s) => `\x1b[36m${s}\x1b[0m`;
@@ -31,7 +40,7 @@ if (fs.existsSync(schedulePath)) {
   schedule = JSON.parse(fs.readFileSync(schedulePath, 'utf8'));
 }
 
-// Helper to query LeetCode GraphQL
+// LeetCode GraphQL query helper
 async function queryLeetCode(query, variables = {}) {
   const cookie = process.env.LEETCODE_SESSION || '';
   const headers = {
@@ -158,42 +167,18 @@ function getTodayIso(offsetDays = 0) {
   return `${yr}-${mo}-${da}`;
 }
 
-// Clean HTML tags for markdown/terminal
-function htmlToPlainText(html) {
-  if (!html) return '';
-  return html
-    .replace(/<pre>([\s\S]*?)<\/pre>/gi, '\n```\n$1\n```\n')
-    .replace(/<code>(.*?)<\/code>/gi, '`$1`')
-    .replace(/<strong[^>]*>(.*?)<\/strong>/gi, '**$1**')
-    .replace(/<em[^>]*>(.*?)<\/em>/gi, '*$1*')
-    .replace(/<li[^>]*>(.*?)<\/li>/gi, '• $1\n')
-    .replace(/<p[^>]*>/gi, '\n')
-    .replace(/<\/p>/gi, '\n')
-    .replace(/&le;/g, '≤')
-    .replace(/&ge;/g, '≥')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&amp;/g, '&')
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .replace(/<[^>]+>/g, '')
-    .replace(/\n{3,}/g, '\n\n')
-    .trim();
-}
-
 // Command: Today / Point
 async function showToday() {
   const todayIso = getTodayIso();
   console.log('\n' + '='.repeat(70));
-  console.log(bold(cyan(`  🚀 DAILY LEETCODE POINTER (Go + Rust Dual Track)`)));
-  console.log(gray(`  Current Date: ${todayIso} | Local System Time`));
+  console.log(bold(cyan(`  LeetCode Daily Pointer (Go & Rust)`)));
+  console.log(gray(`  Date: ${todayIso} | Local System Time`));
   console.log('='.repeat(70) + '\n');
 
   // Check login / cookie status
   const userStatus = await fetchUserStatus();
   if (userStatus && userStatus.isSignedIn) {
-    console.log(green(`  ✓ LeetCode Logged In as: ${bold(userStatus.username)}${userStatus.isPremium ? ' [Premium]' : ''}`));
+    console.log(green(`  [OK] LeetCode Account: ${bold(userStatus.username)}${userStatus.isPremium ? ' [Premium]' : ''}`));
     const stats = await fetchUserStats(userStatus.username);
     if (stats?.numAcceptedQuestions) {
       const counts = stats.numAcceptedQuestions;
@@ -201,16 +186,16 @@ async function showToday() {
       const med = counts.find((c) => c.difficulty === 'MEDIUM')?.count || 0;
       const hard = counts.find((c) => c.difficulty === 'HARD')?.count || 0;
       const total = easy + med + hard;
-      console.log(`    Total Solved: ${bold(total)} (${green('Easy: ' + easy)}, ${yellow('Med: ' + med)}, ${red('Hard: ' + hard)})`);
+      console.log(`       Total Solved: ${bold(total)} (Easy: ${easy}, Med: ${med}, Hard: ${hard})`);
     }
     const recent = await fetchRecentAcSubmissions(userStatus.username, 3);
     if (recent.length > 0) {
-      console.log(`    Recent Accepted: ${recent.map((r) => cyan(r.title)).join(', ')}`);
+      console.log(`       Recent Accepted: ${recent.map((r) => cyan(r.title)).join(', ')}`);
     }
     console.log('');
   } else {
-    console.log(yellow(`  ℹ LeetCode Session: Using public API mode.`));
-    console.log(gray(`    Tip: LEETCODE_SESSION is configured in .env and mcp_config.json.\n`));
+    console.log(yellow(`  [INFO] Running in public mode.`));
+    console.log(gray(`         Set LEETCODE_SESSION in .env for private account tracking.\n`));
   }
 
   // 1. Roadmap Target Problem
@@ -223,44 +208,43 @@ async function showToday() {
     isKickoffTomorrow = true;
   }
 
-  console.log(bold(magenta(`  [1] ROADMAP TARGET PROBLEM ${isKickoffTomorrow ? '(Kickoff Tomorrow, Oct 1)' : '(Today\'s Scheduled Target)'}:`)));
+  console.log(bold(magenta(`  [1] ROADMAP TARGET ${isKickoffTomorrow ? '(Kickoff Tomorrow, Oct 1)' : '(Today\'s Target)'}:`)));
   if (targetPlan) {
     console.log(`      Day #${targetPlan.dayIndex}: ${bold(targetPlan.dateLabel)}`);
-    console.log(`      ${cyan(targetPlan.phaseTitle)}`);
+    console.log(`      Phase:      ${targetPlan.phaseTitle}`);
     if (targetPlan.type === 'problem') {
-      console.log(`      Problem:    ${bold(yellow(`#${targetPlan.number} ${targetPlan.title}`))}`);
+      console.log(`      Problem:    #${targetPlan.number} ${targetPlan.title}`);
       console.log(`      URL:        ${cyan(targetPlan.url)}`);
-      console.log(`      Local Dir:  leetcode/${targetPlan.folder}/${targetPlan.number}_${targetPlan.slug}/`);
+      console.log(`      Directory:  leetcode/${targetPlan.folder}/${targetPlan.number}_${targetPlan.slug}/`);
     } else {
       console.log(`      Review:     ${bold(yellow(targetPlan.title))}`);
-      console.log(`      Topic:      Spaced Review / Idiomatic Comparisons`);
+      console.log(`      Topic:      Spaced Review / Idioms`);
     }
   }
 
   // 2. Official LeetCode Daily Challenge
-  console.log('\n' + bold(blue(`  [2] OFFICIAL LEETCODE DAILY CHALLENGE (Live from LeetCode):`)));
+  console.log('\n' + bold(blue(`  [2] LEETCODE DAILY CHALLENGE:`)));
   const daily = await fetchDailyChallenge();
   if (daily && daily.question) {
     const q = daily.question;
     const diffColor = q.difficulty === 'Easy' ? green : q.difficulty === 'Medium' ? yellow : red;
-    console.log(`      Problem:    ${bold(`#${q.questionFrontendId} ${q.title}`)} [${diffColor(q.difficulty)}]`);
+    console.log(`      Problem:    #${q.questionFrontendId} ${q.title} [${diffColor(q.difficulty)}]`);
     console.log(`      Topics:     ${(q.topicTags || []).map((t) => t.name).join(', ')}`);
     console.log(`      URL:        ${cyan('https://leetcode.com' + daily.link)}`);
   } else {
-    console.log(gray('      Unable to fetch official daily challenge (check network connection).'));
+    console.log(gray('      Unable to fetch daily challenge.'));
   }
 
-  // Execution Protocol Guide
-  console.log('\n' + bold(yellow(`  ⏱ STRICT 45-MINUTE EXECUTION PROTOCOL (04:00 - 05:00 AM):`)));
-  console.log(`      ${bold('00–05 min')}: Whiteboard trace, pointer diagramming, edge cases`);
-  console.log(`      ${bold('05–20 min')}: ${green('Go implementation')} (explicit loops, slice ranges, stdlib primitives)`);
-  console.log(`      ${bold('20–40 min')}: ${magenta('Rust rewrite')} (ownership, iterators, Option/Result, zero unneeded .clone())`);
-  console.log(`      ${bold('40–45 min')}: Git commit with complexity and memory model comparisons\n`);
+  console.log('\n' + bold(yellow(`  TIMEBOX PROTOCOL (45 Minutes):`)));
+  console.log(`      00–05 min: Logic trace, diagramming, edge cases`);
+  console.log(`      05–20 min: Go implementation`);
+  console.log(`      20–40 min: Rust implementation`);
+  console.log(`      40–45 min: Complexity analysis & commit\n`);
 
   console.log(gray(`  Commands:`));
-  console.log(gray(`    node daily.mjs scaffold          -> Scaffold folder and boilerplate for today's roadmap problem`));
-  console.log(gray(`    node daily.mjs scaffold daily    -> Scaffold folder and boilerplate for official daily challenge`));
-  console.log(gray(`    node daily.mjs plan              -> View the upcoming schedule roadmap`));
+  console.log(gray(`    node daily.mjs scaffold          -> Scaffold files for today's roadmap problem`));
+  console.log(gray(`    node daily.mjs scaffold daily    -> Scaffold files for official daily challenge`));
+  console.log(gray(`    node daily.mjs plan              -> View the roadmap schedule`));
   console.log('='.repeat(70) + '\n');
 }
 
@@ -296,7 +280,6 @@ async function scaffoldProblem(arg) {
       return;
     }
   } else {
-    // Default to target plan
     if (targetPlan && targetPlan.type === 'problem') {
       targetSlug = targetPlan.slug;
       folderName = targetPlan.folder;
@@ -346,12 +329,11 @@ import (
 ${goCode}
 
 func main() {
-	fmt.Println("--- LeetCode #${probNum}: ${problem.title} (Go) ---")
-	// TODO: Add test execution cases
+	fmt.Println("LeetCode #${probNum}: ${problem.title} (Go)")
 }
 `;
   fs.writeFileSync(path.join(targetDir, 'main.go'), goContent, 'utf8');
-  console.log(green(`  ✓ Generated main.go`));
+  console.log(green(`  - Generated main.go`));
 
   // 2. Generate solution.rs
   const rustContent = `//! LeetCode #${probNum}: ${problem.title}
@@ -367,19 +349,20 @@ mod tests {
     use super::*;
 
     #[test]
+    #[ignore = "not yet implemented"]
     fn test_example() {
-        // TODO: Add test assertions
+        // Add test assertions
     }
 }
 
 fn main() {
-    println!("--- LeetCode #${probNum}: ${problem.title} (Rust) ---");
+    println!("LeetCode #${probNum}: ${problem.title} (Rust)");
 }
 `;
   fs.writeFileSync(path.join(targetDir, 'solution.rs'), rustContent, 'utf8');
-  console.log(green(`  ✓ Generated solution.rs`));
+  console.log(green(`  - Generated solution.rs`));
 
-  // Register in root Cargo.toml if not already present
+  // 3. Register in root Cargo.toml if not already present
   const cargoPath = path.join(__dirname, 'Cargo.toml');
   if (fs.existsSync(cargoPath)) {
     const cargoContent = fs.readFileSync(cargoPath, 'utf8');
@@ -388,58 +371,17 @@ fn main() {
       const relPath = path.relative(__dirname, path.join(targetDir, 'solution.rs')).replace(/\\/g, '/');
       const binEntry = `\n[[bin]]\nname = "${binName}"\npath = "${relPath}"\n`;
       fs.appendFileSync(cargoPath, binEntry, 'utf8');
-      console.log(green(`  ✓ Registered [[bin]] "${binName}" in Cargo.toml`));
+      console.log(green(`  - Registered [[bin]] "${binName}" in Cargo.toml`));
     }
   }
 
-  // 3. Generate README.md
-  const plainText = htmlToPlainText(problem.content);
-  const readmeContent = `# #${probNum}. ${problem.title}
-
-- **Difficulty**: ${problem.difficulty}
-- **Topics**: ${(problem.topicTags || []).map((t) => t.name).join(', ')}
-- **LeetCode URL**: [https://leetcode.com/problems/${targetSlug}/](https://leetcode.com/problems/${targetSlug}/)
-
----
-
-## 45-Minute Execution Protocol
-
-- [ ] **00–05 min**: Whiteboard & Logic Trace (pointer diagrams, boundary conditions, edge cases).
-- [ ] **05–20 min**: Go Implementation (\`main.go\`).
-- [ ] **20–40 min**: Rust Zero-Cost Implementation (\`solution.rs\`).
-- [ ] **40–45 min**: Complexity Analysis & Local Git Commit.
-
----
-
-## Problem Statement
-
-${plainText}
-
----
-
-## Approach & Diagram
-
-### Intuition & Whiteboard Notes
--
-
-### Complexity
-- **Time Complexity**: \`O(...)\`
-- **Space Complexity**: \`O(...)\`
-
-### Go vs. Rust Language Comparisons
-- **Go**:
-- **Rust**:
-`;
-  fs.writeFileSync(path.join(targetDir, 'README.md'), readmeContent, 'utf8');
-  console.log(green(`  ✓ Generated README.md`));
-
-  console.log(bold(green(`\nScaffolding complete! Ready to start the 45-minute sprint.\n`)));
+  console.log(green(`\nScaffolding complete for #${probNum}.\n`));
 }
 
 // Command: Plan
 function showPlan(phaseArg) {
   console.log('\n' + '='.repeat(70));
-  console.log(bold(cyan(`  📅 LEETCODE ROADMAP SCHEDULE (Oct 1, 2026 – Jan 20, 2027)`)));
+  console.log(bold(cyan(`  LeetCode Roadmap Schedule (Oct 1, 2026 – Jan 20, 2027)`)));
   console.log('='.repeat(70) + '\n');
 
   let filtered = schedule;
