@@ -16,3 +16,11 @@ path = "leetcode/01_two_pointers_and_sliding_window/15_3sum/solution.rs"
 [[bin]]
 name = "p1"
 path = "leetcode/00_warmup/1_two_sum/solution.rs"
+
+[[bin]]
+name = "p11"
+path = "leetcode/01_two_pointers_and_sliding_window/11_container_with_most_water/solution.rs"
+
+[[bin]]
+name = "p80"
+path = "leetcode/01_two_pointers_and_sliding_window/80_remove_duplicates_from_sorted_array_ii/solution.rs"
