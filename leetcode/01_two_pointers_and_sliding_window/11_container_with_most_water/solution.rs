@@ -8,13 +8,26 @@
 //! container contains the most water.
 //! Return the maximum amount of water a container can store.
 
+use std::cmp::{max, min};
+
 pub struct Solution;
 
 impl Solution {
     pub fn max_area(height: Vec<i32>) -> i32 {
-        // TODO: Implement Two Pointers solution
-        let _ = height;
-        0
+        let mut max_area = 0;
+        let mut left = 0;
+        let mut right = height.len()-1;
+        while left < right {
+            let width = right-left;
+            max_area = max(max_area, min(height[left], height[right])*width as i32);
+            if height[left] <= height[right] {
+                left += 1;
+            }
+            else {
+                right -= 1;
+            }
+        }
+        max_area
     }
 }
 

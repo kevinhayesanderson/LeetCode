@@ -24,3 +24,7 @@ path = "leetcode/01_two_pointers_and_sliding_window/11_container_with_most_water
 [[bin]]
 name = "p80"
 path = "leetcode/01_two_pointers_and_sliding_window/80_remove_duplicates_from_sorted_array_ii/solution.rs"
+
+[[bin]]
+name = "p125"
+path = "leetcode/01_two_pointers_and_sliding_window/125_valid_palindrome/solution.rs"

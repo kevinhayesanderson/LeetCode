@@ -1,8 +1,6 @@
 package main
 
-import (
-	"fmt"
-)
+import "fmt"
 
 // LeetCode #11: Container With Most Water
 // Difficulty: Medium
@@ -15,9 +13,20 @@ import (
 // Return the maximum amount of water a container can store.
 
 func maxArea(height []int) int {
-	// TODO: Implement Two Pointers solution
-	_ = height
-	return 0
+	left := 0
+	right := len(height)-1
+	maxArea := 0
+	for left < right {
+		width := right - left
+		maxArea = max(maxArea, min(height[left], height[right])*width)
+		if height[left] <= height[right]{
+			left ++
+		} else{
+			right --
+		}
+	}
+
+	return maxArea
 }
 
 func main() {
