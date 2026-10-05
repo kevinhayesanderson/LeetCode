@@ -14,9 +14,36 @@ import (
 // Notice that the solution set must not contain duplicate triplets.
 
 func threeSum(nums []int) [][]int {
-	// TODO: Implement Two Pointers solution
-	_ = sort.Ints
-	return [][]int{}
+	sort.Ints(nums) //sort is clean than map store
+	res := [][]int{}
+	for i := 0; i < len(nums) && nums[i] <= 0; i++ {
+		if i == 0 || nums[i-1] != nums[i] {
+			low := i + 1
+			high := len(nums) - 1
+			for low < high {
+				sum := nums[i] + nums[low] + nums[high]
+				if sum < 0 {
+					low++
+				} else if sum > 0 {
+					high--
+				} else {
+					res = append(res, []int{nums[i], nums[low], nums[high]})
+					low++
+					high--
+
+					for low < high && nums[low -1] == nums[low]{
+						low++
+					}
+
+					for low < high && nums[high+1] == nums[high]{
+						high--
+					}
+				}
+			}
+		}
+	}
+
+	return res
 }
 
 func main() {

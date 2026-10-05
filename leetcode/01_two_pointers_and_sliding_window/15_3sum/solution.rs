@@ -10,9 +10,41 @@ pub struct Solution;
 
 impl Solution {
     pub fn three_sum(nums: Vec<i32>) -> Vec<Vec<i32>> {
-        // TODO: Implement Two Pointers solution
-        let _ = nums;
-        vec![]
+        if nums.len() < 3 {
+            return vec![];
+        }
+        let mut nums = nums;
+        nums.sort_unstable();
+        let mut res : Vec<Vec<i32>> = Vec::new();
+        for (i, &val) in nums.iter().enumerate() {
+            if val > 0 {
+                break;
+            }
+            if i > 0 && nums[i] == nums[i - 1] {
+                continue;
+            }
+            let mut low = i+1;
+            let mut high = nums.len() - 1;
+            while low < high {
+                let sum = nums[i]+nums[low]+nums[high];
+                match sum.cmp(&0) {
+                    std::cmp::Ordering::Less => low +=1,
+                    std::cmp::Ordering::Greater => high -= 1,
+                    std::cmp::Ordering::Equal =>{
+                        res.push(vec![nums[i], nums[low], nums[high]]);
+                        low += 1;
+                        high -= 1;
+                        while low < high && nums[low] == nums[low - 1] {
+                            low += 1;
+                        }
+                        while low < high && nums[high] == nums[high + 1] {
+                            high -= 1;
+                        }
+                    } 
+                }
+            }
+        }
+        res
     }
 }
 
